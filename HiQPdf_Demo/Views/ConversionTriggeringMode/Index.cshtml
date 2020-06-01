@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewBag.Title = "HTML to PDF - Conversion Triggering Mode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function toggleWaitTimePanel(triggerMode) {
+        var panelEnabled = triggerMode == "WaitTime";
+        var waitTimePanel = document.getElementById("panelWaitTime");
+
+        if (panelEnabled)
+            waitTimePanel.style.display = "block";
+        else
+            waitTimePanel.style.display = "none";
+    }
+
+    SelectTreeViewNode("treeView_ConversionTriggeringMode");
+</script>
+
+@using (Html.BeginForm("ConvertToPdf", "ConversionTriggeringMode", FormMethod.Post))
+{
+    <table cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    In this demo you learn about the conversion triggering modes. There are three conversion
+                    triggering modes: Auto, WaitTime and Manual.<br>
+                    <br>
+                    In the sample script we provide, a ticks counter is incremented each 30 ms after
+                    the document was loaded. When the ticks count reached 100 in about 3 seconds the
+                    startConversion() is called.<br>
+                    <br>
+                    When the triggering mode is Manual the call to startConversion() will trigger the
+                    conversion.
+                    <br>
+                    When the triggering mode is WaitTime a wait time of 5 seconds is sufficient to allow
+                    the ticks count reach 100.
+                    <br>
+                    When the triggering mode is Auto the conversion will start before the counter reached
+                    100.
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="padding-bottom: 5px; font-weight: bold">
+                                    HTML Code
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <textarea name="textBoxHtmlCode" rows="2" cols="20" id="textBoxHtmlCode" style="height:200px;width:590px;">&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Conversion Triggering Mode&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;br /&gt;
+    &lt;br /&gt;
+    &lt;span style="font-family: Times New Roman; font-size: 10pt"&gt;When the triggering mode
+        is 'Manual' the conversion is triggered by the call to &lt;b&gt;hiqPdfConverter.startConversion()&lt;/b&gt;
+        from JavaScript.&lt;br /&gt;
+        In this example document the startConversion() method is called when the ticks count
+        reached 100 which happens in about 3 seconds.&lt;/span&gt;
+    &lt;br /&gt;
+    &lt;br /&gt;
+    &lt;b&gt;Ticks Count:&lt;/b&gt; &lt;span style="color: Red" id="ticks"&gt;0&lt;/span&gt;
+    &lt;br /&gt;
+    &lt;br /&gt;
+    &lt;!-- display HiQPdf HTML converter version if the document is loaded in converter--&gt;
+    &lt;span style="font-family: Times New Roman; font-size: 10pt"&gt;HiQPdf Info:
+        &lt;script type="text/javascript"&gt;
+            // check if the document is loaded in HiQPdf HTML to PDF Converter
+            if (typeof hiqPdfInfo == "undefined") {
+                // hiqPdfInfo object is not defined and the document is loaded in a browser
+                document.write("Not in HiQPdf");
+            }
+            else {
+                // hiqPdfInfo object is defined and the document is loaded in converter
+                document.write(hiqPdfInfo.getVersion());
+            }
+        &lt;/script&gt;
+    &lt;/span&gt;
+    &lt;br /&gt;
+    &lt;script type="text/javascript"&gt;
+        var ticks = 0;
+        function tick() {
+            // increment ticks count
+            ticks++;
+
+            var ticksElement = document.getElementById("ticks");
+            // set ticks count
+            ticksElement.innerHTML = ticks;
+            if (ticks == 100) {
+                // trigger conversion
+                ticksElement.style.color = "green";
+                if (typeof hiqPdfConverter != "undefined")
+                     hiqPdfConverter.startConversion();
+            }
+            else {
+                // wait one more tick
+                setTimeout("tick()", 30);
+            }
+        }
+
+        tick();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+
+                                        
+</textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="height: 30px; font-weight: bold">
+                                    Conversion Triggering Mode:
+                                </td>
+                                <td style="width: 5px; height: 30px;"></td>
+                                <td style="height: 30px;">
+                                    <select name="dropDownListTriggeringMode" onchange="javascript: toggleWaitTimePanel(this.value)" id="dropDownListTriggeringMode">
+                                        <option value="Auto">Auto</option>
+                                        <option selected="selected" value="Manual">Manual</option>
+                                        <option value="WaitTime">WaitTime</option>
+
+                                    </select>
+                                </td>
+                                <td style="width: 20px; height: 30px;"></td>
+                                <td style="height: 30px">
+                                    <div id="panelWaitTime" style="display:none">
+
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        Wait Time:
+                                                    </td>
+                                                    <td style="width: 5px"></td>
+                                                    <td>
+                                                        <input name="textBoxWaitTime" type="text" value="5" id="textBoxWaitTime" style="width:30px;">
+                                                    </td>
+                                                    <td style="width: 5px"></td>
+                                                    <td>
+                                                        sec
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="buttonCreatePdf" value="Create PDF" id="buttonCreatePdf">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

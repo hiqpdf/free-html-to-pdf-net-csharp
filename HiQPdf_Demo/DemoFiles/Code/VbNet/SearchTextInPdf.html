@@ -1,0 +1,78 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>Imports</span> HiQPdf
+
+<span style='color:#800000; font-weight:bold; '>Public</span> <span style='color:#800000; font-weight:bold; '>Class</span> SearchTextInPdf
+    <span style='color:#800000; font-weight:bold; '>Inherits</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>Page
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> buttonSearchText_Click<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> buttonSearchText<span style='color:#008c00; '>.</span>Click
+        <span style='color:#696969; '>' get the PDF file</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> pdfFile <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#0000e6; '>"\DemoFiles\Pdf\InputPdf.pdf"</span>
+
+        <span style='color:#696969; '>' get the text to search</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> textToSearch <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> textBoxTextToSearch<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+
+        <span style='color:#696969; '>' create the PDF text extractor</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> pdfTextExtractor <span style='color:#800000; font-weight:bold; '>As</span> PdfTextExtract <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfTextExtract<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' set a demo serial number</span>
+        pdfTextExtractor<span style='color:#008c00; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ=="</span>
+
+        <span style='color:#800000; font-weight:bold; '>Dim</span> fromPdfPageNumber <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Integer</span> <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Integer</span><span style='color:#008c00; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxFromPage<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> toPdfPageNumber <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Integer</span> <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span>
+        <span style='color:#800000; font-weight:bold; '>If</span> textBoxToPage<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#008c00; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            toPdfPageNumber <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Integer</span><span style='color:#008c00; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxToPage<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#696969; '>' search the text in PDF document</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> searchTextInstances <span style='color:#800000; font-weight:bold; '>As</span> PdfTextSearchItem<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> pdfTextExtractor<span style='color:#008c00; '>.</span>SearchText<span style='color:#808030; '>(</span>pdfFile<span style='color:#808030; '>,</span> textToSearch<span style='color:#808030; '>,</span>
+                    fromPdfPageNumber<span style='color:#808030; '>,</span> toPdfPageNumber<span style='color:#808030; '>,</span> checkBoxMatchCase<span style='color:#008c00; '>.</span>Checked<span style='color:#808030; '>,</span> checkBoxMatchWholeWord<span style='color:#008c00; '>.</span>Checked<span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' load the PDF file to search</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> pdfDocument <span style='color:#800000; font-weight:bold; '>As</span> PdfDocument <span style='color:#808030; '>=</span> pdfDocument<span style='color:#008c00; '>.</span>FromFile<span style='color:#808030; '>(</span>pdfFile<span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' set a demo serial number</span>
+        pdfDocument<span style='color:#008c00; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ=="</span>
+
+        <span style='color:#696969; '>' highlight the searched text in PDF document</span>
+        <span style='color:#800000; font-weight:bold; '>For</span> <span style='color:#800000; font-weight:bold; '>Each</span> searchTextInstance <span style='color:#800000; font-weight:bold; '>As</span> PdfTextSearchItem <span style='color:#800000; font-weight:bold; '>In</span> searchTextInstances
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfRectangle <span style='color:#800000; font-weight:bold; '>As</span> PdfRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfRectangle<span style='color:#808030; '>(</span>searchTextInstance<span style='color:#008c00; '>.</span>BoundingRectangle<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set rectangle color and opacity</span>
+            pdfRectangle<span style='color:#008c00; '>.</span>BackColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Yellow
+            pdfRectangle<span style='color:#008c00; '>.</span>Opacity <span style='color:#808030; '>=</span> <span style='color:#008c00; '>30</span>
+
+            <span style='color:#696969; '>' highlight the text</span>
+            pdfDocument<span style='color:#008c00; '>.</span>Pages<span style='color:#808030; '>(</span>searchTextInstance<span style='color:#008c00; '>.</span>PdfPageNumber <span style='color:#808030; '>-</span> <span style='color:#008c00; '>1</span><span style='color:#808030; '>)</span><span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>pdfRectangle<span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>Next</span> searchTextInstance
+
+        <span style='color:#696969; '>' write the modified PDF document</span>
+        <span style='color:#800000; font-weight:bold; '>Try</span>
+            <span style='color:#696969; '>' write the PDF document to a memory buffer</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfBuffer <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Byte</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> pdfDocument<span style='color:#008c00; '>.</span>WriteToMemory<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' inform the browser about the binary data format</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Type"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"application/pdf"</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' let the browser know how to open the PDF document and the file name</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Disposition"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Format</span><span style='color:#808030; '>(</span><span style='color:#0000e6; '>"attachment; filename=SearchText.pdf; size={0}"</span><span style='color:#808030; '>,</span>
+                        pdfBuffer<span style='color:#008c00; '>.</span>Length<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' write the PDF buffer to HTTP response</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' call End() method of HTTP response to stop ASP.NET page processing</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>End</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>Finally</span>
+            pdfDocument<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Close</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Try</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> <span style='color:#800000; font-weight:bold; '>Me</span><span style='color:#008c00; '>.</span>Load
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> IsPostBack <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pageUri <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Request<span style='color:#008c00; '>.</span>Url<span style='color:#008c00; '>.</span>AbsoluteUri
+            hyperLinkOpenPdf<span style='color:#008c00; '>.</span>NavigateUrl <span style='color:#808030; '>=</span> pageUri<span style='color:#008c00; '>.</span>Substring<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> pageUri<span style='color:#008c00; '>.</span>LastIndexOf<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"/"</span>c<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#0000e6; '>"/DemoFiles/Pdf/InputPdf.pdf"</span>
+
+            Master<span style='color:#008c00; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"searchText"</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+<span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Class</span>
+</pre>

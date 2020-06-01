@@ -1,0 +1,205 @@
+﻿
+@{
+    ViewBag.Title = "PDF Security Settings Demo ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function encryptionModeChanged() {
+        var encryptionModeDropDownList = document.getElementById("dropDownListEncryptionMode");
+        var encryptionLevelDropDownList = document.getElementById("dropDownListEncryptionLevel");
+        var encryptionMode = encryptionModeDropDownList.value;
+        var encryptionLevel = encryptionLevelDropDownList.value;
+
+        if (encryptionMode == "RC4" && encryptionLevel == "Very High")
+            encryptionLevelDropDownList.value = "High"; // very high mode not supported for RC4
+        if (encryptionMode == "AES" && encryptionLevel == "Low")
+            encryptionLevelDropDownList.value = "High"; // low mode not supported for AES
+    }
+
+    function allowFillFormsOptionChanged() {
+        var allowEditCheckBox = document.getElementById("checkBoxAllowEdit");
+        var allowEditAnnotationsCheckBox = document.getElementById("checkBoxAllowEditAnnotations");
+        var allowFillFormsCheckBox = document.getElementById("checkBoxAllowFillForms");
+
+        var allowFillForms = allowFillFormsCheckBox.checked;
+
+        if (!allowFillForms) {
+            allowEditCheckBox.checked = false;
+            allowEditAnnotationsCheckBox.checked = false;
+        }
+    }
+
+    function allowEditOptionChanged() {
+        var allowEditCheckBox = document.getElementById("checkBoxAllowEdit");
+        var allowFillFormsCheckBox = document.getElementById("checkBoxAllowFillForms");
+
+        var allowEdit = allowEditCheckBox.checked;
+
+        if (allowEdit)
+            allowFillFormsCheckBox.checked = true;
+    }
+
+    function allowEditAnnotationsOptionChanged() {
+        var allowEditAnnotationsCheckBox = document.getElementById("checkBoxAllowEditAnnotations");
+        var allowFillFormsCheckBox = document.getElementById("checkBoxAllowFillForms");
+
+        var allowEditAnnotations = allowEditAnnotationsCheckBox.checked;
+
+        if (allowEditAnnotations)
+            allowFillFormsCheckBox.checked = true;
+    }
+
+    SelectTreeViewNode("treeView_PdfSecuritySettings");
+</script>
+
+@using (Html.BeginForm("ConvertToPdf", "PdfSecuritySettings", FormMethod.Post))
+{
+    <table cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    In this demo you can see how to convert an URL or HTML file to a PDF and how to set the security of generated PDF document.
+                    You can set a password required to open the PDF document in a PDF viewer, a password to edit the PDF document permissions
+                    in a PDF Editor, you can enable or disable the PDF document printing, content copying, editing or filling PDF forms in a
+                    PDF viewer or editor, set the encryption mode and the encryption level of the PDF document.
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="padding-bottom: 5px">
+                                    URL
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input name="textBoxUrl" type="text" value="http://www.hiqpdf.com" id="textBoxUrl" style="width:590px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    PDF Security Settings
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Encryption Mode:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td style="width: 83px">
+                                    <select name="dropDownListEncryptionMode" onchange="javascript:encryptionModeChanged()" id="dropDownListEncryptionMode">
+                                        <option selected="selected" value="RC4">RC4</option>
+                                        <option value="AES">AES</option>
+
+                                    </select>
+                                </td>
+                                <td style="width: 10px"></td>
+                                <td>
+                                    Encryption Level:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <select name="dropDownListEncryptionLevel" onchange="javascript:encryptionModeChanged()" id="dropDownListEncryptionLevel">
+                                        <option value="Low">Low</option>
+                                        <option selected="selected" value="High">High</option>
+                                        <option value="Very High">Very High</option>
+
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Open Password:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxOpenPassword" type="text" id="textBoxOpenPassword" style="width:80px;">
+                                </td>
+                                <td style="width: 20px"></td>
+                                <td>
+                                    Permissions Password:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxPermissionsPassword" type="text" id="textBoxPermissionsPassword" style="width:80px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input id="checkBoxAllowPrint" type="checkbox" name="checkBoxAllowPrint" checked="checked"><label for="checkBoxAllowPrint">Print</label>
+                                </td>
+                                <td style="width: 20px;"></td>
+                                <td>
+                                    <input id="checkBoxAllowCopy" type="checkbox" name="checkBoxAllowCopy" checked="checked"><label for="checkBoxAllowCopy">Copy</label>
+                                </td>
+                                <td style="width: 20px;"></td>
+                                <td>
+                                    <input id="checkBoxAllowEdit" type="checkbox" name="checkBoxAllowEdit" checked="checked" onclick="javascript: allowEditOptionChanged()"><label for="checkBoxAllowEdit">Edit</label>
+                                </td>
+                                <td style="width: 20px;"></td>
+                                <td>
+                                    <input id="checkBoxAllowEditAnnotations" type="checkbox" name="checkBoxAllowEditAnnotations" checked="checked" onclick="javascript: allowEditAnnotationsOptionChanged()"><label for="checkBoxAllowEditAnnotations">Annotations</label>
+                                </td>
+                                <td style="width: 20px;"></td>
+                                <td>
+                                    <input id="checkBoxAllowFillForms" type="checkbox" name="checkBoxAllowFillForms" checked="checked" onclick="javascript:allowFillFormsOptionChanged()"><label for="checkBoxAllowFillForms">Fill Forms</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="buttonConvertToPdf" value="Convert to PDF" id="buttonConvertToPdf">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+

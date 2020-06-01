@@ -1,0 +1,296 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Configuration
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Collections
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>Security
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>WebControls
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>WebControls<span style='color:#008c00; '>.</span>WebParts
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>HtmlControls
+
+<span style='color:#800000; font-weight:bold; '>Imports</span> HiQPdf
+
+<span style='color:#800000; font-weight:bold; '>Namespace</span> HiQPdf_Demo
+    Partial <span style='color:#800000; font-weight:bold; '>Public</span> <span style='color:#800000; font-weight:bold; '>Class</span> ConvertHtmlToPdf
+        <span style='color:#800000; font-weight:bold; '>Inherits</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>Page
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> buttonConvertToPdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> buttonConvertToPdf<span style='color:#008c00; '>.</span>Click
+            <span style='color:#696969; '>' create the HTML to PDF converter</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htmlToPdfConverter <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> HtmlToPdf<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set a demo serial number</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ=="</span>
+
+            <span style='color:#696969; '>' set browser width</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>BrowserWidth <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Integer</span><span style='color:#008c00; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxBrowserWidth<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set browser height if specified, otherwise use the default</span>
+            <span style='color:#800000; font-weight:bold; '>If</span> textBoxBrowserHeight<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#008c00; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                htmlToPdfConverter<span style='color:#008c00; '>.</span>BrowserHeight <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Integer</span><span style='color:#008c00; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxBrowserHeight<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#696969; '>' set HTML Load timeout</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>HtmlLoadedTimeout <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Integer</span><span style='color:#008c00; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxLoadHtmlTimeout<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set PDF page size and orientation</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>PageSize <span style='color:#808030; '>=</span> GetSelectedPageSize<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>PageOrientation <span style='color:#808030; '>=</span> GetSelectedPageOrientation<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set the PDF standard used by the document</span>
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>checkBoxPdfA<span style='color:#008c00; '>.</span>Checked<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>PdfStandard <span style='color:#808030; '>=</span> PdfStandard<span style='color:#008c00; '>.</span>PdfA
+            <span style='color:#800000; font-weight:bold; '>Else</span>
+                htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>PdfStandard <span style='color:#808030; '>=</span> PdfStandard<span style='color:#008c00; '>.</span>Pdf
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#696969; '>' set PDF page margins</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>Margins <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfMargins<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set whether to embed the true type font in PDF</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>FontEmbedding <span style='color:#808030; '>=</span> checkBoxFontEmbedding<span style='color:#008c00; '>.</span>Checked
+
+            <span style='color:#696969; '>' set triggering mode; for WaitTime mode set the wait time before convert</span>
+            <span style='color:#800000; font-weight:bold; '>Select</span> <span style='color:#800000; font-weight:bold; '>Case</span> dropDownListTriggeringMode<span style='color:#008c00; '>.</span>SelectedValue
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Auto"</span>
+                    htmlToPdfConverter<span style='color:#008c00; '>.</span>TriggerMode <span style='color:#808030; '>=</span> ConversionTriggerMode<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Auto</span>
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"WaitTime"</span>
+                    htmlToPdfConverter<span style='color:#008c00; '>.</span>TriggerMode <span style='color:#808030; '>=</span> ConversionTriggerMode<span style='color:#008c00; '>.</span>WaitTime
+                    htmlToPdfConverter<span style='color:#008c00; '>.</span>WaitBeforeConvert <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Integer</span><span style='color:#008c00; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxWaitTime<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Manual"</span>
+                    htmlToPdfConverter<span style='color:#008c00; '>.</span>TriggerMode <span style='color:#808030; '>=</span> ConversionTriggerMode<span style='color:#008c00; '>.</span>Manual
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#800000; font-weight:bold; '>Else</span>
+                    htmlToPdfConverter<span style='color:#008c00; '>.</span>TriggerMode <span style='color:#808030; '>=</span> ConversionTriggerMode<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Auto</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Select</span>
+
+            <span style='color:#696969; '>' set header and footer</span>
+            SetHeader<span style='color:#808030; '>(</span>htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#808030; '>)</span>
+            SetFooter<span style='color:#808030; '>(</span>htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set the document security</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>OpenPassword <span style='color:#808030; '>=</span> textBoxOpenPassword<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Trim</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>AllowPrinting <span style='color:#808030; '>=</span> checkBoxAllowPrinting<span style='color:#008c00; '>.</span>Checked
+
+            <span style='color:#696969; '>' set the permissions password too if an open password was set</span>
+            <span style='color:#800000; font-weight:bold; '>If</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>OpenPassword IsNot <span style='color:#800000; font-weight:bold; '>Nothing</span> <span style='color:#800000; font-weight:bold; '>And</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>OpenPassword<span style='color:#008c00; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>PermissionsPassword <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>Document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>OpenPassword <span style='color:#808030; '>+</span> <span style='color:#0000e6; '>"_admin"</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#696969; '>' convert HTML to PDF</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfBuffer<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Byte</span> <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Nothing</span>
+
+            <span style='color:#800000; font-weight:bold; '>If</span> radioButtonConvertUrl<span style='color:#008c00; '>.</span>Checked <span style='color:#800000; font-weight:bold; '>Then</span>
+                <span style='color:#696969; '>' convert URL to a PDF memory buffer</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> url <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> textBoxUrl<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+
+                pdfBuffer <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>ConvertUrlToMemory<span style='color:#808030; '>(</span>url<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Else</span>
+                <span style='color:#696969; '>' convert HTML code</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> htmlCode <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> textBoxHtmlCode<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> baseUrl <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> textBoxBaseUrl<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+
+                <span style='color:#696969; '>' convert HTML code to a PDF memory buffer</span>
+                pdfBuffer <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>ConvertHtmlToMemory<span style='color:#808030; '>(</span>htmlCode<span style='color:#808030; '>,</span> baseUrl<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#696969; '>' inform the browser about the binary data format</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Type"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"application/pdf"</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' let the browser know how to open the PDF document, attachment or inline, and the file name</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> openMode <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"attachment"</span>
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>checkBoxOpenInline<span style='color:#008c00; '>.</span>Checked<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                openMode <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"inline"</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Disposition"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Format</span><span style='color:#808030; '>(</span><span style='color:#0000e6; '>"{0}; filename=HtmlToPdf.pdf; size={1}"</span><span style='color:#808030; '>,</span> openMode<span style='color:#808030; '>,</span> pdfBuffer<span style='color:#008c00; '>.</span>Length<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' write the PDF buffer to HTTP response</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' call End() method of HTTP response to stop ASP.NET page processing</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>End</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Private</span> <span style='color:#800000; font-weight:bold; '>Sub</span> SetHeader<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> htmlToPdfDocument <span style='color:#800000; font-weight:bold; '>As</span> PdfDocumentControl<span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' enable header display</span>
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Header<span style='color:#008c00; '>.</span>Enabled <span style='color:#808030; '>=</span> checkBoxAddHeader<span style='color:#008c00; '>.</span>Checked
+
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>Header<span style='color:#008c00; '>.</span>Enabled <span style='color:#800000; font-weight:bold; '>Then</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#696969; '>' set header height</span>
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Header<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>=</span> <span style='color:#008c00; '>50</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfPageWidth <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Single</span> <span style='color:#808030; '>=</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>PageSize<span style='color:#008c00; '>.</span>Width
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>htmlToPdfDocument<span style='color:#008c00; '>.</span>PageOrientation <span style='color:#808030; '>=</span> PdfPageOrientation<span style='color:#008c00; '>.</span>Landscape<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                pdfPageWidth <span style='color:#808030; '>=</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>PageSize<span style='color:#008c00; '>.</span>Height
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> headerWidth <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Single</span> <span style='color:#808030; '>=</span> pdfPageWidth <span style='color:#808030; '>-</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>Margins<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Left</span> <span style='color:#808030; '>-</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>Margins<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Right</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> headerHeight <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Single</span> <span style='color:#808030; '>=</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>Header<span style='color:#008c00; '>.</span>Height
+
+            <span style='color:#696969; '>' set header background color</span>
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Header<span style='color:#008c00; '>.</span>BackgroundColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>WhiteSmoke
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> headerImageFile <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo.png"</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> logoHeaderImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>40</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Drawing<span style='color:#008c00; '>.</span>Image<span style='color:#008c00; '>.</span>FromFile<span style='color:#808030; '>(</span>headerImageFile<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Header<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>logoHeaderImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' layout HTML in header</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> headerHtml <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfHtml<span style='color:#808030; '>(</span><span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"&lt;span style="</span><span style='color:#0000e6; '>"color:Navy; font-family:Times New Roman; font-style:italic"</span><span style='color:#0000e6; '>">Quickly Create High Quality PDFs with &lt;/span>&lt;a href="</span><span style='color:#0000e6; '>"http://www.hiqpdf.com"</span><span style='color:#0000e6; '>">HiQPdf&lt;/a>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>Nothing</span><span style='color:#808030; '>)</span>
+            headerHtml<span style='color:#008c00; '>.</span>FitDestHeight <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>True</span>
+            headerHtml<span style='color:#008c00; '>.</span>FontEmbedding <span style='color:#808030; '>=</span> checkBoxFontEmbedding<span style='color:#008c00; '>.</span>Checked
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Header<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>headerHtml<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' create a border for header</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> borderRectangle <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfRectangle<span style='color:#808030; '>(</span><span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> headerWidth <span style='color:#808030; '>-</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> headerHeight <span style='color:#808030; '>-</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span>
+            borderRectangle<span style='color:#008c00; '>.</span>LineStyle<span style='color:#008c00; '>.</span>LineWidth <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0.</span>5F
+            borderRectangle<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Header<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>borderRectangle<span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Private</span> <span style='color:#800000; font-weight:bold; '>Sub</span> SetFooter<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> htmlToPdfDocument <span style='color:#800000; font-weight:bold; '>As</span> PdfDocumentControl<span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' enable footer display</span>
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>Enabled <span style='color:#808030; '>=</span> checkBoxAddFooter<span style='color:#008c00; '>.</span>Checked
+
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>Enabled <span style='color:#800000; font-weight:bold; '>Then</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#696969; '>' set footer height</span>
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>=</span> <span style='color:#008c00; '>50</span>
+
+            <span style='color:#696969; '>' set footer background color</span>
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>BackgroundColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>WhiteSmoke
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfPageWidth <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Single</span> <span style='color:#808030; '>=</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>PageSize<span style='color:#008c00; '>.</span>Width
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>htmlToPdfDocument<span style='color:#008c00; '>.</span>PageOrientation <span style='color:#808030; '>=</span> PdfPageOrientation<span style='color:#008c00; '>.</span>Landscape<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                pdfPageWidth <span style='color:#808030; '>=</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>PageSize<span style='color:#008c00; '>.</span>Height
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> footerWidth <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Single</span> <span style='color:#808030; '>=</span> pdfPageWidth <span style='color:#808030; '>-</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>Margins<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Left</span> <span style='color:#808030; '>-</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>Margins<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Right</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> footerHeight <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Single</span> <span style='color:#808030; '>=</span> htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>Height
+
+            <span style='color:#696969; '>' layout HTML in footer</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> footerHtml <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfHtml<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"&lt;span style="</span><span style='color:#0000e6; '>"color:Navy; font-family:Times New Roman; font-style:italic"</span><span style='color:#0000e6; '>">Quickly Create High Quality PDFs with &lt;/span>&lt;a href="</span><span style='color:#0000e6; '>"http://www.hiqpdf.com"</span><span style='color:#0000e6; '>">HiQPdf&lt;/a>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>Nothing</span><span style='color:#808030; '>)</span>
+            footerHtml<span style='color:#008c00; '>.</span>FitDestHeight <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>True</span>
+            footerHtml<span style='color:#008c00; '>.</span>FontEmbedding <span style='color:#808030; '>=</span> checkBoxFontEmbedding<span style='color:#008c00; '>.</span>Checked
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>footerHtml<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' add page numbering</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pageNumberingFont <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> Font<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>New</span> FontFamily<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Times New Roman"</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>8</span><span style='color:#808030; '>,</span> GraphicsUnit<span style='color:#008c00; '>.</span>Point<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pageNumberingText <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> footerHeight <span style='color:#808030; '>-</span> <span style='color:#008c00; '>12</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"Page {CrtPage} of {PageCount}"</span><span style='color:#808030; '>,</span> pageNumberingFont<span style='color:#808030; '>)</span>
+            pageNumberingText<span style='color:#008c00; '>.</span>HorizontalAlign <span style='color:#808030; '>=</span> PdfTextHAlign<span style='color:#008c00; '>.</span>Center
+            pageNumberingText<span style='color:#008c00; '>.</span>EmbedSystemFont <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>True</span>
+            pageNumberingText<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>DarkGreen
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>pageNumberingText<span style='color:#808030; '>)</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> footerImageFile <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo.png"</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> logoFooterImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span>footerWidth <span style='color:#808030; '>-</span> <span style='color:#008c00; '>40</span> <span style='color:#808030; '>-</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>40</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Drawing<span style='color:#008c00; '>.</span>Image<span style='color:#008c00; '>.</span>FromFile<span style='color:#808030; '>(</span>footerImageFile<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>logoFooterImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' create a border for footer</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> borderRectangle <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfRectangle<span style='color:#808030; '>(</span><span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> footerWidth <span style='color:#808030; '>-</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> footerHeight <span style='color:#808030; '>-</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span>
+            borderRectangle<span style='color:#008c00; '>.</span>LineStyle<span style='color:#008c00; '>.</span>LineWidth <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0.</span>5F
+            borderRectangle<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>DarkGreen
+            htmlToPdfDocument<span style='color:#008c00; '>.</span>Footer<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>borderRectangle<span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Private</span> <span style='color:#800000; font-weight:bold; '>Function</span> GetSelectedPageSize<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> PdfPageSize
+            <span style='color:#800000; font-weight:bold; '>Select</span> <span style='color:#800000; font-weight:bold; '>Case</span> dropDownListPageSizes<span style='color:#008c00; '>.</span>SelectedValue
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A0"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A0
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A1"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A1
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A10"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A10
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A2"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A2
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A3"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A3
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A4"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A4
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A5"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A5
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A6"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A6
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A7"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A7
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A8"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A8
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"A9"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A9
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"ArchA"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>ArchA
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"ArchB"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>ArchB
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"ArchC"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>ArchC
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"ArchD"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>ArchD
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"ArchE"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>ArchE
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"B0"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>B0
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"B1"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>B1
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"B2"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>B2
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"B3"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>B3
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"B4"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>B4
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"B5"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>B5
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Flsa"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>Flsa
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"HalfLetter"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>HalfLetter
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Ledger"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>Ledger
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Legal"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>Legal
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Letter"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>Letter
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Letter11x17"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>Letter11x17
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Note"</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>Note
+                <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#800000; font-weight:bold; '>Else</span>
+                    <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageSize<span style='color:#008c00; '>.</span>A4
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Select</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Function</span>
+
+        <span style='color:#800000; font-weight:bold; '>Private</span> <span style='color:#800000; font-weight:bold; '>Function</span> GetSelectedPageOrientation<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> PdfPageOrientation
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>dropDownListPageOrientations<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"Portrait"</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageOrientation<span style='color:#008c00; '>.</span>Portrait
+            <span style='color:#800000; font-weight:bold; '>Else</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfPageOrientation<span style='color:#008c00; '>.</span>Landscape
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Function</span>
+
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> radioButtonConvertUrl_CheckedChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            panelUrl<span style='color:#008c00; '>.</span>Visible <span style='color:#808030; '>=</span> radioButtonConvertUrl<span style='color:#008c00; '>.</span>Checked
+            panelHtmlCode<span style='color:#008c00; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Not</span> radioButtonConvertUrl<span style='color:#008c00; '>.</span>Checked
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> radioButtonConvertHtmlCode_CheckedChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            panelUrl<span style='color:#008c00; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Not</span> radioButtonConvertHtmlCode<span style='color:#008c00; '>.</span>Checked
+            panelHtmlCode<span style='color:#008c00; '>.</span>Visible <span style='color:#808030; '>=</span> radioButtonConvertHtmlCode<span style='color:#008c00; '>.</span>Checked
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> IsPostBack <span style='color:#800000; font-weight:bold; '>Then</span>
+                dropDownListPageSizes<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"A4"</span>
+                dropDownListPageOrientations<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"Portrait"</span>
+
+                dropDownListTriggeringMode<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"WaitTime"</span>
+                panelWaitTime<span style='color:#008c00; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>True</span>
+
+                Master<span style='color:#008c00; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"htmlToPdf"</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> dropDownListTriggeringMode_SelectedIndexChanged<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> dropDownListTriggeringMode<span style='color:#008c00; '>.</span>SelectedIndexChanged
+            panelWaitTime<span style='color:#008c00; '>.</span>Visible <span style='color:#808030; '>=</span> dropDownListTriggeringMode<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"WaitTime"</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Class</span>
+<span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Namespace</span>
+</pre>

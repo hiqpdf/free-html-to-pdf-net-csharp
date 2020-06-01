@@ -1,0 +1,121 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>IO
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI
+
+<span style='color:#800000; font-weight:bold; '>Imports</span> HiQPdf
+
+<span style='color:#800000; font-weight:bold; '>Public</span> <span style='color:#800000; font-weight:bold; '>Class</span> ConvertHtmlPreservingState
+    <span style='color:#800000; font-weight:bold; '>Inherits</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>Page
+
+    <span style='color:#696969; '>' a flag to indicate to Render method if the current page</span>
+    <span style='color:#696969; '>' will be converted to PDF</span>
+    <span style='color:#800000; font-weight:bold; '>Dim</span> convertCrtPageToPdf <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Boolean</span> <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>False</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> <span style='color:#800000; font-weight:bold; '>Me</span><span style='color:#008c00; '>.</span>Load
+        panelSessionVariableValue<span style='color:#008c00; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>False</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> IsPostBack <span style='color:#800000; font-weight:bold; '>Then</span>
+            Master<span style='color:#008c00; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"convertHtmlPreservingState"</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> buttonConvertCrtPage_Click<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> buttonConvertCrtPage<span style='color:#008c00; '>.</span>Click
+        <span style='color:#696969; '>' indicate to Render method that the current page</span>
+        <span style='color:#696969; '>' will be converted to PDF</span>
+        convertCrtPageToPdf <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>True</span>
+
+        <span style='color:#696969; '>'save custom value in ASP.NET session variable</span>
+        Session<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"SessionVariable"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> textBoxCrtSessionVariable<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+
+        <span style='color:#696969; '>' show session variable value</span>
+        panelSessionVariableValue<span style='color:#008c00; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>True</span>
+        litSessionVariableValue<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span> <span style='color:#808030; '>=</span> Session<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"SessionVariable"</span><span style='color:#808030; '>)</span><span style='color:#808030; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#696969; '>' override the Render method of the ASP.NET page</span>
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Overrides</span> <span style='color:#800000; font-weight:bold; '>Sub</span> Render<span style='color:#808030; '>(</span>writer <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>HtmlTextWriter<span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>convertCrtPageToPdf<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+
+            <span style='color:#696969; '>' setup a TextWriter to capture the current page HTML code</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> tw <span style='color:#800000; font-weight:bold; '>As</span> TextWriter <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> StringWriter<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htw <span style='color:#800000; font-weight:bold; '>As</span> HtmlTextWriter <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> HtmlTextWriter<span style='color:#808030; '>(</span>tw<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' render the HTML markup into the TextWriter</span>
+            <span style='color:#800000; font-weight:bold; '>MyBase</span><span style='color:#008c00; '>.</span>Render<span style='color:#808030; '>(</span>htw<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' get the current page HTML code</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htmlCode <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> tw<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' convert the HTML code to PDF</span>
+
+            <span style='color:#696969; '>' create the HTML to PDF converter</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htmlToPdfConverter <span style='color:#800000; font-weight:bold; '>As</span> HtmlToPdf <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> HtmlToPdf<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set a demo serial number</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ=="</span>
+
+            <span style='color:#696969; '>' hide the HTML buttons</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>HiddenHtmlElements <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> {<span style='color:#0000e6; '>"#convertCrtPageDiv"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"#convertAnotherPageDiv"</span>}
+
+            <span style='color:#696969; '>' the base URL used to resolve images, CSS and script files</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> currentPageUrl <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Request<span style='color:#008c00; '>.</span>Url<span style='color:#008c00; '>.</span>AbsoluteUri
+
+            <span style='color:#696969; '>' convert HTML code to a PDF memory buffer</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfBuffer <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Byte</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>ConvertHtmlToMemory<span style='color:#808030; '>(</span>htmlCode<span style='color:#808030; '>,</span> currentPageUrl<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' inform the browser about the binary data format</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Type"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"application/pdf"</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' let the browser know how to open the PDF document, attachment or inline, and the file name        </span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Disposition"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Format</span><span style='color:#808030; '>(</span><span style='color:#0000e6; '>"attachment; filename=ConvertThisHtmlWithState.pdf; size={0}"</span><span style='color:#808030; '>,</span> pdfBuffer<span style='color:#008c00; '>.</span>Length<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' write the PDF buffer to HTTP response</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' call End() method of HTTP response to stop ASP.NET page processing</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>End</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>Else</span>
+            <span style='color:#800000; font-weight:bold; '>MyBase</span><span style='color:#008c00; '>.</span>Render<span style='color:#808030; '>(</span>writer<span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> buttonConvertAnotherPage_Click<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> buttonConvertAnotherPage<span style='color:#008c00; '>.</span>Click
+        <span style='color:#696969; '>' save custom value in ASP.NET session variable</span>
+        Session<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"SessionVariable"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> textBoxAnotherSessionVariable<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+
+        <span style='color:#696969; '>' setup a TextWriter to capture the HTML code of the page to convert</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> tw <span style='color:#800000; font-weight:bold; '>As</span> TextWriter <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> StringWriter<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' execute the 'AnotherPageInThisApplication.aspx' page in the same application and capture the HTML code</span>
+        Server<span style='color:#008c00; '>.</span>Execute<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"AnotherPageInThisApplication.aspx"</span><span style='color:#808030; '>,</span> tw<span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' get the HTML code from writer</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> htmlCode <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> tw<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' convert the HTML code to PDF</span>
+
+        <span style='color:#696969; '>' create the HTML to PDF converter</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> htmlToPdfConverter <span style='color:#800000; font-weight:bold; '>As</span> HtmlToPdf <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> HtmlToPdf<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' the base URL used to resolve images, CSS and script files</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> baseUrl <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Request<span style='color:#008c00; '>.</span>Url<span style='color:#008c00; '>.</span>AbsoluteUri
+
+        <span style='color:#696969; '>' convert HTML code to a PDF memory buffer</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> pdfBuffer <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Byte</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>ConvertHtmlToMemory<span style='color:#808030; '>(</span>htmlCode<span style='color:#808030; '>,</span> baseUrl<span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' inform the browser about the binary data format</span>
+        HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Type"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"application/pdf"</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' let the browser know how to open the PDF document, attachment or inline, and the file name        </span>
+        HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Disposition"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Format</span><span style='color:#808030; '>(</span><span style='color:#0000e6; '>"attachment; filename=ConvertAnotherHtmlWithState.pdf; size={0}"</span><span style='color:#808030; '>,</span> pdfBuffer<span style='color:#008c00; '>.</span>Length<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' write the PDF buffer to HTTP response</span>
+        HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' call End() method of HTTP response to stop ASP.NET page processing</span>
+        HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>End</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+<span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Class</span>
+</pre>

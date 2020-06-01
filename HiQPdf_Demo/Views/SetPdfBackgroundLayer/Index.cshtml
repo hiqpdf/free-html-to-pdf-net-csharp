@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewBag.Title = "HTML to PDF - Set PDF Background Color";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    SelectTreeViewNode("treeView_SetPdfBackgroundLayer");
+</script>
+
+@using (Html.BeginForm("ConvertToPdf", "SetPdfBackgroundLayer", FormMethod.Post))
+{
+    <table cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    In this demo you learn how to add a custom background content to the PDF pages created
+                    by the converter in the PageLayoutingEvent event handler called right before rendering
+                    the main HTML content in PDF page.<br>
+                    <br>
+                    The PageLayoutingEvent event handler parameter contains the PdfPage object being
+                    rendered and the rectangle inside the page that will be rendered. The PDF objects
+                    added to the PdfPage in this event handler will be rendered in the background of
+                    the main HTML content.
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="padding-bottom: 5px; font-weight: bold">
+                                    HTML Document URL
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input name="textBoxUrl" type="text" value="http://www.hiqpdf.com" id="textBoxUrl" style="width:590px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    Settings
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    Set PDF background color components as values from 0 to 255:
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Red:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxR" type="text" value="192" id="textBoxR" style="width:30px;">
+                                </td>
+                                <td style="width: 40px"></td>
+                                <td>
+                                    Green:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxG" type="text" value="255" id="textBoxG" style="width:30px;">
+                                </td>
+                                <td style="width: 40px"></td>
+                                <td>
+                                    Blue:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxB" type="text" value="192" id="textBoxB" style="width:30px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    Page Margins:
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Left:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxLeftMargin" type="text" value="0" id="textBoxLeftMargin" style="width:30px;">
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    pt
+                                </td>
+                                <td style="width: 22px"></td>
+                                <td>
+                                    Right:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxRightMargin" type="text" value="0" id="textBoxRightMargin" style="width:30px;">
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    pt
+                                </td>
+                                <td style="width: 25px"></td>
+                                <td>
+                                    Top:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxTopMargin" type="text" value="0" id="textBoxTopMargin" style="width:30px;">
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    pt
+                                </td>
+                                <td style="width: 15px"></td>
+                                <td>
+                                    Bottom:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxBottomMargin" type="text" value="0" id="textBoxBottomMargin" style="width:30px;">
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    pt
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="buttonCreatePdf" value="Create PDF" id="buttonCreatePdf">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+

@@ -1,0 +1,108 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Collections<span style='color:#808030; '>.</span>Generic<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>using</span> HiQPdf<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>namespace</span> HiQPdf_Demo
+<span style='color:#800080; '>{</span>
+    <span style='color:#800000; font-weight:bold; '>public</span> partial <span style='color:#800000; font-weight:bold; '>class</span> ExtractImagesFromPdf <span style='color:#808030; '>:</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>Page
+    <span style='color:#800080; '>{</span>
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> buttonExtractImages_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// get the PDF file</span>
+            <span style='color:#800000; font-weight:bold; '>string</span> pdfFile <span style='color:#808030; '>=</span> Server<span style='color:#808030; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>~</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>\DemoFiles\Pdf\InputPdf.pdf</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the PDF images extractor</span>
+            PdfImagesExtract pdfImagesExtract <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfImagesExtract<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set a demo serial number</span>
+            pdfImagesExtract<span style='color:#808030; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ==</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>int</span> fromPdfPageNumber <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxFromPage<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>int</span> toPdfPageNumber <span style='color:#808030; '>=</span> textBoxToPage<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span> ? <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxToPage<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span> <span style='color:#808030; '>:</span> <span style='color:#008c00; '>0</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// extract the images from PDF document to memory in .NET Image objects</span>
+            <span style='color:#696969; '>// the images can also be extracted to a folder using the ExtractToImageFiles method </span>
+            <span style='color:#696969; '>// or they can be extracted one by one using the RaiseImageExtractedEvent method</span>
+            ExtractedPdfImage<span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> extractedImages <span style='color:#808030; '>=</span> pdfImagesExtract<span style='color:#808030; '>.</span>ExtractToImageObjects<span style='color:#808030; '>(</span>pdfFile<span style='color:#808030; '>,</span> fromPdfPageNumber<span style='color:#808030; '>,</span> toPdfPageNumber<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// return if no image was extracted</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>extractedImages<span style='color:#808030; '>.</span>Length <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+                <span style='color:#800000; font-weight:bold; '>return</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get the largest image bytes in a buffer</span>
+            <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> imageBuffer <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>null</span><span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>try</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// select the largest image</span>
+                ExtractedPdfImage largestImage <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>null</span><span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>for</span> <span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>int</span> i <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#800080; '>;</span> i <span style='color:#808030; '>&lt;</span> extractedImages<span style='color:#808030; '>.</span>Length<span style='color:#800080; '>;</span> i<span style='color:#808030; '>+</span><span style='color:#808030; '>+</span><span style='color:#808030; '>)</span>
+                <span style='color:#800080; '>{</span>
+                    <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>largestImage <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>null</span> || extractedImages<span style='color:#808030; '>[</span>i<span style='color:#808030; '>]</span><span style='color:#808030; '>.</span>ImageObject<span style='color:#808030; '>.</span>Size<span style='color:#808030; '>.</span>Width <span style='color:#808030; '>*</span> extractedImages<span style='color:#808030; '>[</span>i<span style='color:#808030; '>]</span><span style='color:#808030; '>.</span>ImageObject<span style='color:#808030; '>.</span>Size<span style='color:#808030; '>.</span>Height <span style='color:#808030; '>></span>
+                        largestImage<span style='color:#808030; '>.</span>ImageObject<span style='color:#808030; '>.</span>Size<span style='color:#808030; '>.</span>Width <span style='color:#808030; '>*</span> largestImage<span style='color:#808030; '>.</span>ImageObject<span style='color:#808030; '>.</span>Size<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span>
+                    <span style='color:#800080; '>{</span>
+                        largestImage <span style='color:#808030; '>=</span> extractedImages<span style='color:#808030; '>[</span>i<span style='color:#808030; '>]</span><span style='color:#800080; '>;</span>
+                    <span style='color:#800080; '>}</span>
+                <span style='color:#800080; '>}</span>
+
+                <span style='color:#696969; '>// get the .NET Image object</span>
+                System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Image imageObject <span style='color:#808030; '>=</span> largestImage<span style='color:#808030; '>.</span>ImageObject<span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// get the image data in a buffer</span>
+                imageBuffer <span style='color:#808030; '>=</span> GetImageBuffer<span style='color:#808030; '>(</span>imageObject<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+            <span style='color:#800000; font-weight:bold; '>finally</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// dispose the extracted images</span>
+                <span style='color:#800000; font-weight:bold; '>for</span> <span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>int</span> i <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#800080; '>;</span> i <span style='color:#808030; '>&lt;</span> extractedImages<span style='color:#808030; '>.</span>Length<span style='color:#800080; '>;</span> i<span style='color:#808030; '>+</span><span style='color:#808030; '>+</span><span style='color:#808030; '>)</span>
+                    extractedImages<span style='color:#808030; '>[</span>i<span style='color:#808030; '>]</span><span style='color:#808030; '>.</span>Dispose<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+
+            <span style='color:#696969; '>// inform the browser about the binary data format</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Type</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>image/png</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// let the browser know how to open the image and the image name</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Disposition</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span>
+                        String<span style='color:#808030; '>.</span>Format<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>attachment; filename={0}; size={1}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>ExtractedImage.png</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> imageBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// write the image buffer to HTTP response</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>imageBuffer<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// call End() method of HTTP response to stop ASP.NET page processing</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>End<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>private</span> <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> GetImageBuffer<span style='color:#808030; '>(</span>System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Image imageObject<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// create a memory stream where to save the image</span>
+            System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>MemoryStream imageMemoryStream <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>MemoryStream<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// save the image to memory stream</span>
+            imageObject<span style='color:#808030; '>.</span>Save<span style='color:#808030; '>(</span>imageMemoryStream<span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Imaging<span style='color:#808030; '>.</span>ImageFormat<span style='color:#808030; '>.</span>Png<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get a copy of the image buffer to allow image disposing</span>
+            <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> imageBuffer <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span>imageMemoryStream<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>]</span><span style='color:#800080; '>;</span>
+            Array<span style='color:#808030; '>.</span>Copy<span style='color:#808030; '>(</span>imageMemoryStream<span style='color:#808030; '>.</span>GetBuffer<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> imageBuffer<span style='color:#808030; '>,</span> imageBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// close the memory stream</span>
+            imageMemoryStream<span style='color:#808030; '>.</span>Close<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>return</span> imageBuffer<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>IsPostBack<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#800000; font-weight:bold; '>string</span> pageUri <span style='color:#808030; '>=</span> HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Request<span style='color:#808030; '>.</span>Url<span style='color:#808030; '>.</span>AbsoluteUri<span style='color:#800080; '>;</span>
+                hyperLinkOpenPdf<span style='color:#808030; '>.</span>NavigateUrl <span style='color:#808030; '>=</span> pageUri<span style='color:#808030; '>.</span>Substring<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> pageUri<span style='color:#808030; '>.</span>LastIndexOf<span style='color:#808030; '>(</span><span style='color:#0000e6; '>'/'</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>/DemoFiles/Pdf/InputPdf.pdf</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+                Master<span style='color:#808030; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>extractImages</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+    <span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+</pre>

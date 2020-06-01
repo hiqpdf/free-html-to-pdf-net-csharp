@@ -1,0 +1,91 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Data<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Configuration<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Collections<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>Security<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#808030; '>.</span>WebParts<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>HtmlControls<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>using</span> HiQPdf<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>namespace</span> HiQPdf_Demo
+<span style='color:#800080; '>{</span>
+    <span style='color:#800000; font-weight:bold; '>public</span> partial <span style='color:#800000; font-weight:bold; '>class</span> SetPdfBackgroundLayer <span style='color:#808030; '>:</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>Page
+    <span style='color:#800080; '>{</span>
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> buttonCreatePdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// create the HTML to PDF converter</span>
+            HtmlToPdf htmlToPdfConverter <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> HtmlToPdf<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set a demo serial number</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ==</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// attach to PageLayoutingEvent event raised right before layouting the HTML content in a PDF page</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>PageLayoutingEvent <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfPageLayoutingDelegate<span style='color:#808030; '>(</span>htmlToPdfConverter_PageLayoutingEvent<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set PDF page margins</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>Margins <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfMargins<span style='color:#808030; '>(</span>
+                                        <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxLeftMargin<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxRightMargin<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span>
+                                        <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxTopMargin<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxBottomMargin<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            
+            <span style='color:#800000; font-weight:bold; '>try</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> pdfBuffer <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#808030; '>.</span>ConvertUrlToMemory<span style='color:#808030; '>(</span>textBoxUrl<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// inform the browser about the binary data format</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Type</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>application/pdf</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// let the browser know how to open the PDF document, attachment or inline, and the file name</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Disposition</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> String<span style='color:#808030; '>.</span>Format<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>attachment; filename=SetPdfBackground.pdf; size={0}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span>
+                                pdfBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// write the PDF buffer to HTTP response</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// call End() method of HTTP response to stop ASP.NET page processing</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>End<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+            <span style='color:#800000; font-weight:bold; '>finally</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// dettach from PageLayoutingEvent event</span>
+                htmlToPdfConverter<span style='color:#808030; '>.</span>PageLayoutingEvent <span style='color:#808030; '>-</span><span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfPageLayoutingDelegate<span style='color:#808030; '>(</span>htmlToPdfConverter_PageLayoutingEvent<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#696969; '>/// &lt;summary></span>
+        <span style='color:#696969; '>/// The PageLayoutingEvent event handler called before each PDF page is rendered by the converter</span>
+        <span style='color:#696969; '>/// &lt;/summary></span>
+        <span style='color:#696969; '>/// &lt;param name="eventParams">The event handler parameter giving information about the PDF page being rendered </span>
+        <span style='color:#696969; '>/// and the rectangle in page that will be rendered&lt;/param></span>
+        <span style='color:#800000; font-weight:bold; '>void</span> htmlToPdfConverter_PageLayoutingEvent<span style='color:#808030; '>(</span>PdfPageLayoutingParams eventParams<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// The PDF page being rendered</span>
+            PdfPage crtPage <span style='color:#808030; '>=</span> eventParams<span style='color:#808030; '>.</span>PdfPage<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// draw a colored rectangle in the background of the PDF page</span>
+            PdfRectangle backColorRect <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfRectangle<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> crtPage<span style='color:#808030; '>.</span>DrawableRectangle<span style='color:#808030; '>.</span>Width<span style='color:#808030; '>,</span> crtPage<span style='color:#808030; '>.</span>DrawableRectangle<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            backColorRect<span style='color:#808030; '>.</span>BackColor <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Color<span style='color:#808030; '>.</span>FromArgb<span style='color:#808030; '>(</span><span style='color:#008c00; '>255</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxR<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxG<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxB<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            crtPage<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>backColorRect<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// draw a 2 points orange line under the rendered content in page</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF leftBottom <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>eventParams<span style='color:#808030; '>.</span>LayoutingBounds<span style='color:#808030; '>.</span>Left<span style='color:#808030; '>,</span> eventParams<span style='color:#808030; '>.</span>LayoutingBounds<span style='color:#808030; '>.</span>Bottom <span style='color:#808030; '>+</span> <span style='color:#008c00; '>1</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF rightBottom <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>eventParams<span style='color:#808030; '>.</span>LayoutingBounds<span style='color:#808030; '>.</span>Right<span style='color:#808030; '>,</span> eventParams<span style='color:#808030; '>.</span>LayoutingBounds<span style='color:#808030; '>.</span>Bottom <span style='color:#808030; '>+</span> <span style='color:#008c00; '>1</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfLine bottomLine <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfLine<span style='color:#808030; '>(</span>leftBottom<span style='color:#808030; '>,</span> rightBottom<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            bottomLine<span style='color:#808030; '>.</span>LineStyle<span style='color:#808030; '>.</span>LineWidth <span style='color:#808030; '>=</span> <span style='color:#008000; '>2.0</span><span style='color:#006600; '>f</span><span style='color:#800080; '>;</span>
+            bottomLine<span style='color:#808030; '>.</span>ForeColor <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Color<span style='color:#808030; '>.</span>OrangeRed<span style='color:#800080; '>;</span>
+            crtPage<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>bottomLine<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>IsPostBack<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                Master<span style='color:#808030; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>setPdfBackgroundLayer</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+    <span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+</pre>

@@ -1,0 +1,173 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Data<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Configuration<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Collections<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>Security<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#808030; '>.</span>WebParts<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>HtmlControls<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>using</span> HiQPdf<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>namespace</span> HiQPdf_Demo
+<span style='color:#800080; '>{</span>
+    <span style='color:#800000; font-weight:bold; '>public</span> partial <span style='color:#800000; font-weight:bold; '>class</span> MultipleHtmlLayers <span style='color:#808030; '>:</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>Page
+    <span style='color:#800080; '>{</span>
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> buttonCreatePdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// create an empty PDF document</span>
+            PdfDocument document <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDocument<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set a demo serial number</span>
+            document<span style='color:#808030; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ==</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// add a page to document</span>
+            PdfPage page1 <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>AddPage<span style='color:#808030; '>(</span>PdfPageSize<span style='color:#808030; '>.</span>A4<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDocumentMargins<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> PdfPageOrientation<span style='color:#808030; '>.</span>Portrait<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>try</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// set the document header and footer before adding any objects to document</span>
+                SetHeader<span style='color:#808030; '>(</span>document<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+                SetFooter<span style='color:#808030; '>(</span>document<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// layout the HTML from URL 1</span>
+                PdfHtml html1 <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfHtml<span style='color:#808030; '>(</span>textBoxUrl1<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+                html1<span style='color:#808030; '>.</span>WaitBeforeConvert <span style='color:#808030; '>=</span> <span style='color:#008c00; '>2</span><span style='color:#800080; '>;</span>
+                PdfLayoutInfo html1LayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>html1<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// determine the PDF page where to add URL 2</span>
+                PdfPage page2 <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>null</span><span style='color:#800080; '>;</span>
+                System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF location2 <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>.</span>Empty<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>checkBoxNewPage<span style='color:#808030; '>.</span>Checked<span style='color:#808030; '>)</span>
+                <span style='color:#800080; '>{</span>
+                    <span style='color:#696969; '>// URL 2 is laid out on a new page with the selected orientation</span>
+                    page2 <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>AddPage<span style='color:#808030; '>(</span>PdfPageSize<span style='color:#808030; '>.</span>A4<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDocumentMargins<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> GetSelectedPageOrientation<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+                    location2 <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>.</span>Empty<span style='color:#800080; '>;</span>
+                <span style='color:#800080; '>}</span>
+                <span style='color:#800000; font-weight:bold; '>else</span>
+                <span style='color:#800080; '>{</span>
+                    <span style='color:#696969; '>// URL 2 is laid out immediately after URL 1 and html1LayoutInfo</span>
+                    <span style='color:#696969; '>// gives the location where the URL 1 layout finished</span>
+                    page2 <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>Pages<span style='color:#808030; '>[</span>html1LayoutInfo<span style='color:#808030; '>.</span>LastPageIndex<span style='color:#808030; '>]</span><span style='color:#800080; '>;</span>
+                    location2 <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>html1LayoutInfo<span style='color:#808030; '>.</span>LastPageRectangle<span style='color:#808030; '>.</span>X<span style='color:#808030; '>,</span> html1LayoutInfo<span style='color:#808030; '>.</span>LastPageRectangle<span style='color:#808030; '>.</span>Bottom<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+                <span style='color:#800080; '>}</span>
+
+                <span style='color:#696969; '>// layout the HTML from URL 2</span>
+                PdfHtml html2 <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfHtml<span style='color:#808030; '>(</span>location2<span style='color:#808030; '>.</span>X<span style='color:#808030; '>,</span> location2<span style='color:#808030; '>.</span>Y<span style='color:#808030; '>,</span> textBoxUrl2<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+                html2<span style='color:#808030; '>.</span>WaitBeforeConvert <span style='color:#808030; '>=</span> <span style='color:#008c00; '>2</span><span style='color:#800080; '>;</span>
+                page2<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>html2<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// write the PDF document to a memory buffer</span>
+                <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> pdfBuffer <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>WriteToMemory<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// inform the browser about the binary data format</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Type</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>application/pdf</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// let the browser know how to open the PDF document and the file name</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Disposition</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> String<span style='color:#808030; '>.</span>Format<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>attachment; filename=LayoutMultipleHtml.pdf; size={0}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span>
+                            pdfBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// write the PDF buffer to HTTP response</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// call End() method of HTTP response to stop ASP.NET page processing</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>End<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+            <span style='color:#800000; font-weight:bold; '>finally</span>
+            <span style='color:#800080; '>{</span>
+                document<span style='color:#808030; '>.</span>Close<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>private</span> <span style='color:#800000; font-weight:bold; '>void</span> SetHeader<span style='color:#808030; '>(</span>PdfDocument document<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>checkBoxAddHeader<span style='color:#808030; '>.</span>Checked<span style='color:#808030; '>)</span>
+                <span style='color:#800000; font-weight:bold; '>return</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the document header</span>
+            document<span style='color:#808030; '>.</span>CreateHeaderCanvas<span style='color:#808030; '>(</span><span style='color:#008c00; '>50</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// add PDF objects to the header canvas</span>
+            <span style='color:#800000; font-weight:bold; '>string</span> headerImageFile <span style='color:#808030; '>=</span> Server<span style='color:#808030; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>~</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>\DemoFiles\Images\HiQPdfLogo.png</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+            PdfImage logoHeaderImage <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfImage<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>40</span><span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Image<span style='color:#808030; '>.</span>FromFile<span style='color:#808030; '>(</span>headerImageFile<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            document<span style='color:#808030; '>.</span>Header<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>logoHeaderImage<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// layout HTML in header</span>
+            PdfHtml headerHtml <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfHtml<span style='color:#808030; '>(</span><span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>&lt;span style=</span><span style='color:#0f69ff; '>""</span><span style='color:#0000e6; '>color:Navy; font-family:Times New Roman; font-style:italic</span><span style='color:#0f69ff; '>""</span><span style='color:#0000e6; '>></span>
+<span style='color:#0000e6; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;Quickly Create High Quality PDFs with &lt;/span>&lt;a href=</span><span style='color:#0f69ff; '>""</span><span style='color:#0000e6; '>http://www.hiqpdf.com</span><span style='color:#0f69ff; '>""</span><span style='color:#0000e6; '>>HiQPdf&lt;/a></span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>null</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            headerHtml<span style='color:#808030; '>.</span>FitDestHeight <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#800080; '>;</span>
+            headerHtml<span style='color:#808030; '>.</span>FontEmbedding <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#800080; '>;</span>
+            document<span style='color:#808030; '>.</span>Header<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>headerHtml<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create a border for header</span>
+            <span style='color:#800000; font-weight:bold; '>float</span> headerWidth <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>Header<span style='color:#808030; '>.</span>Width<span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>float</span> headerHeight <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>Header<span style='color:#808030; '>.</span>Height<span style='color:#800080; '>;</span>
+            PdfRectangle borderRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfRectangle<span style='color:#808030; '>(</span><span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> headerWidth <span style='color:#808030; '>-</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> headerHeight <span style='color:#808030; '>-</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            borderRectangle<span style='color:#808030; '>.</span>LineStyle<span style='color:#808030; '>.</span>LineWidth <span style='color:#808030; '>=</span> <span style='color:#008000; '>0.5</span><span style='color:#006600; '>f</span><span style='color:#800080; '>;</span>
+            borderRectangle<span style='color:#808030; '>.</span>ForeColor <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Color<span style='color:#808030; '>.</span>Navy<span style='color:#800080; '>;</span>
+            document<span style='color:#808030; '>.</span>Header<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>borderRectangle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>private</span> <span style='color:#800000; font-weight:bold; '>void</span> SetFooter<span style='color:#808030; '>(</span>PdfDocument document<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>checkBoxAddFooter<span style='color:#808030; '>.</span>Checked<span style='color:#808030; '>)</span>
+                <span style='color:#800000; font-weight:bold; '>return</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>//create the document footer</span>
+            document<span style='color:#808030; '>.</span>CreateFooterCanvas<span style='color:#808030; '>(</span><span style='color:#008c00; '>50</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// layout HTML in footer</span>
+            PdfHtml footerHtml <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfHtml<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>&lt;span style=</span><span style='color:#0f69ff; '>""</span><span style='color:#0000e6; '>color:Navy; font-family:Times New Roman; font-style:italic</span><span style='color:#0f69ff; '>""</span><span style='color:#0000e6; '>></span>
+<span style='color:#0000e6; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;Quickly Create High Quality PDFs with &lt;/span>&lt;a href=</span><span style='color:#0f69ff; '>""</span><span style='color:#0000e6; '>http://www.hiqpdf.com</span><span style='color:#0f69ff; '>""</span><span style='color:#0000e6; '>>HiQPdf&lt;/a></span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>null</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            footerHtml<span style='color:#808030; '>.</span>FitDestHeight <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#800080; '>;</span>
+            footerHtml<span style='color:#808030; '>.</span>FontEmbedding <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#800080; '>;</span>
+            document<span style='color:#808030; '>.</span>Footer<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>footerHtml<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+
+            <span style='color:#800000; font-weight:bold; '>float</span> footerHeight <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>Footer<span style='color:#808030; '>.</span>Height<span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>float</span> footerWidth <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>Footer<span style='color:#808030; '>.</span>Width<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// add page numbering</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Font pageNumberingFont <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Font<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>FontFamily<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Times New Roman</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>8</span><span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>GraphicsUnit<span style='color:#808030; '>.</span>Point<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfText pageNumberingText <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span><span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> footerHeight <span style='color:#808030; '>-</span> <span style='color:#008c00; '>12</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Page {CrtPage} of {PageCount}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pageNumberingFont<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            pageNumberingText<span style='color:#808030; '>.</span>HorizontalAlign <span style='color:#808030; '>=</span> PdfTextHAlign<span style='color:#808030; '>.</span>Center<span style='color:#800080; '>;</span>
+            pageNumberingText<span style='color:#808030; '>.</span>EmbedSystemFont <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#800080; '>;</span>
+            pageNumberingText<span style='color:#808030; '>.</span>ForeColor <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Color<span style='color:#808030; '>.</span>DarkGreen<span style='color:#800080; '>;</span>
+            document<span style='color:#808030; '>.</span>Footer<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>pageNumberingText<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>string</span> footerImageFile <span style='color:#808030; '>=</span> Server<span style='color:#808030; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>~</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>\DemoFiles\Images\HiQPdfLogo.png</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+            PdfImage logoFooterImage <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfImage<span style='color:#808030; '>(</span>footerWidth <span style='color:#808030; '>-</span> <span style='color:#008c00; '>40</span> <span style='color:#808030; '>-</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>5</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>40</span><span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Image<span style='color:#808030; '>.</span>FromFile<span style='color:#808030; '>(</span>footerImageFile<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            document<span style='color:#808030; '>.</span>Footer<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>logoFooterImage<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create a border for footer</span>
+            PdfRectangle borderRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfRectangle<span style='color:#808030; '>(</span><span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> footerWidth <span style='color:#808030; '>-</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> footerHeight <span style='color:#808030; '>-</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            borderRectangle<span style='color:#808030; '>.</span>LineStyle<span style='color:#808030; '>.</span>LineWidth <span style='color:#808030; '>=</span> <span style='color:#008000; '>0.5</span><span style='color:#006600; '>f</span><span style='color:#800080; '>;</span>
+            borderRectangle<span style='color:#808030; '>.</span>ForeColor <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Color<span style='color:#808030; '>.</span>DarkGreen<span style='color:#800080; '>;</span>
+            document<span style='color:#808030; '>.</span>Footer<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>borderRectangle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>private</span> PdfPageOrientation GetSelectedPageOrientation<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#808030; '>(</span>dropDownListPageOrientations<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Portrait</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> ?
+                PdfPageOrientation<span style='color:#808030; '>.</span>Portrait <span style='color:#808030; '>:</span> PdfPageOrientation<span style='color:#808030; '>.</span>Landscape<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>IsPostBack<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                panelNewPageOrientation<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> checkBoxNewPage<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+
+                Master<span style='color:#808030; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>multipleHtmlLayers</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> checkBoxNewPage_CheckedChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            panelNewPageOrientation<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> checkBoxNewPage<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+    <span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+</pre>

@@ -1,0 +1,100 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>WebControls
+
+<span style='color:#800000; font-weight:bold; '>Imports</span> HiQPdf
+
+<span style='color:#800000; font-weight:bold; '>Namespace</span> HiQPdf_Demo
+    Partial <span style='color:#800000; font-weight:bold; '>Public</span> <span style='color:#800000; font-weight:bold; '>Class</span> PdfOpenAction
+        <span style='color:#800000; font-weight:bold; '>Inherits</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>Page
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> buttonCreatePdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' create a PDF document</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> document <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfDocument<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set a demo serial number</span>
+            document<span style='color:#008c00; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ=="</span>
+
+            <span style='color:#696969; '>' create the true type fonts that can be used in document</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> ttfFont <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> Font<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Times New Roman"</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> GraphicsUnit<span style='color:#008c00; '>.</span>Point<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> newTimesFont <span style='color:#800000; font-weight:bold; '>As</span> PdfFont <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>CreateFont<span style='color:#808030; '>(</span>ttfFont<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> newTimesFontEmbed <span style='color:#800000; font-weight:bold; '>As</span> PdfFont <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>CreateFont<span style='color:#808030; '>(</span>ttfFont<span style='color:#808030; '>,</span> <span style='color:#0f4d75; '>True</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' create page 1</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> page1 <span style='color:#800000; font-weight:bold; '>As</span> PdfPage <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>AddPage<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' create a text object to be laid out on this page</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> text1 <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span><span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"This is the Page 1 of the document with Open action"</span><span style='color:#808030; '>,</span> newTimesFontEmbed<span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' layout the text</span>
+            page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>text1<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' create page 2</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> page2 <span style='color:#800000; font-weight:bold; '>As</span> PdfPage <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>AddPage<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' create a text object to be laid out on this page</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> text2 <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span><span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"This is the Page 2 of the document with Open action"</span><span style='color:#808030; '>,</span> newTimesFontEmbed<span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' layout the text</span>
+            page2<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>text2<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' create page 1</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> page3 <span style='color:#800000; font-weight:bold; '>As</span> PdfPage <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>AddPage<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' create a text object to be laid out on this page</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> text3 <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span><span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"This is the Page 3 of the document with Open action"</span><span style='color:#808030; '>,</span> newTimesFontEmbed<span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' layout the text</span>
+            page3<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>text3<span style='color:#808030; '>)</span>
+
+            <span style='color:#800000; font-weight:bold; '>If</span> radioButtonJavaScript<span style='color:#008c00; '>.</span>Checked <span style='color:#800000; font-weight:bold; '>Then</span>
+                <span style='color:#696969; '>' display an alert message when the document is opened</span>
+
+                <span style='color:#800000; font-weight:bold; '>Dim</span> alertMessage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> textBoxAlertMessage<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> javaScriptCode <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"app.alert({cMsg: "</span><span style='color:#0000e6; '>""</span> <span style='color:#808030; '>&amp;</span> alertMessage <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>""</span><span style='color:#0000e6; '>", cTitle: "</span><span style='color:#0000e6; '>"Open Document JavaScript Action"</span><span style='color:#0000e6; '>"});"</span>
+
+                <span style='color:#696969; '>' create the JavaScript action to display the alert</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> javaScriptAction <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfJavaScriptAction<span style='color:#808030; '>(</span>javaScriptCode<span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' set the document JavaScript open action</span>
+                document<span style='color:#008c00; '>.</span>SetOpenAction<span style='color:#808030; '>(</span>javaScriptAction<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Else</span>
+                <span style='color:#696969; '>' go to a given page in document and set the given zoom level when the document is opened</span>
+
+                <span style='color:#800000; font-weight:bold; '>Dim</span> pageIndex <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Integer</span> <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span>
+                <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>radioButtonPage2<span style='color:#008c00; '>.</span>Checked<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                    pageIndex <span style='color:#808030; '>=</span> <span style='color:#008c00; '>1</span>
+                <span style='color:#800000; font-weight:bold; '>ElseIf</span> <span style='color:#808030; '>(</span>radioButtonPage3<span style='color:#008c00; '>.</span>Checked<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                    pageIndex <span style='color:#808030; '>=</span> <span style='color:#008c00; '>2</span>
+                <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+                <span style='color:#800000; font-weight:bold; '>Dim</span> zoomLevel <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Integer</span> <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Integer</span><span style='color:#008c00; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxZoomLevel<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#800000; font-weight:bold; '>Dim</span> openDestination <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfDestination<span style='color:#808030; '>(</span>document<span style='color:#008c00; '>.</span>Pages<span style='color:#808030; '>(</span>pageIndex<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>New</span> PointF<span style='color:#808030; '>(</span><span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+                openDestination<span style='color:#008c00; '>.</span>Zoom <span style='color:#808030; '>=</span> zoomLevel
+                <span style='color:#800000; font-weight:bold; '>Dim</span> goToAction <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfGoToAction<span style='color:#808030; '>(</span>openDestination<span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' set the document GoTo open action</span>
+                document<span style='color:#008c00; '>.</span>SetOpenAction<span style='color:#808030; '>(</span>goToAction<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+            <span style='color:#800000; font-weight:bold; '>Try</span>
+                <span style='color:#696969; '>' write the PDF document to a memory buffer</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> pdfBuffer<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Byte</span> <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>WriteToMemory<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' inform the browser about the binary data format</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Type"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"application/pdf"</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' let the browser know how to open the PDF document and the file name</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Disposition"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Format</span><span style='color:#808030; '>(</span><span style='color:#0000e6; '>"attachment; filename=OpenAction.pdf; size={0}"</span><span style='color:#808030; '>,</span> pdfBuffer<span style='color:#008c00; '>.</span>Length<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' write the PDF buffer to HTTP response</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' call End() method of HTTP response to stop ASP.NET page processing</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>End</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Finally</span>
+                document<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Close</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Try</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> IsPostBack <span style='color:#800000; font-weight:bold; '>Then</span>
+                Master<span style='color:#008c00; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"pdfOpenAction"</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Class</span>
+<span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Namespace</span>
+</pre>

@@ -1,0 +1,237 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>WebControls
+
+<span style='color:#800000; font-weight:bold; '>Imports</span> HiQPdf
+
+<span style='color:#800000; font-weight:bold; '>Namespace</span> HiQPdf_Demo
+    Partial <span style='color:#800000; font-weight:bold; '>Public</span> <span style='color:#800000; font-weight:bold; '>Class</span> PdfImages
+        <span style='color:#800000; font-weight:bold; '>Inherits</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>Page
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> buttonCreatePdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' create a PDF document</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> document <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfDocument<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set a demo serial number</span>
+            document<span style='color:#008c00; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ=="</span>
+
+            <span style='color:#696969; '>' create a page in document</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> page1 <span style='color:#800000; font-weight:bold; '>As</span> PdfPage <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>AddPage<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set a background color for the page</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> backgroundRectangle <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfRectangle<span style='color:#808030; '>(</span>page1<span style='color:#008c00; '>.</span>DrawableRectangle<span style='color:#808030; '>)</span>
+            backgroundRectangle<span style='color:#008c00; '>.</span>BackColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>WhiteSmoke
+            page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>backgroundRectangle<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' create the true type fonts that can be used in document text</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> sysFont <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> Font<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Times New Roman"</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> GraphicsUnit<span style='color:#008c00; '>.</span>Point<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfFont <span style='color:#800000; font-weight:bold; '>As</span> PdfFont <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>CreateFont<span style='color:#808030; '>(</span>sysFont<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfFontEmbed <span style='color:#800000; font-weight:bold; '>As</span> PdfFont <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>CreateFont<span style='color:#808030; '>(</span>sysFont<span style='color:#808030; '>,</span> <span style='color:#0f4d75; '>True</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> crtYPos <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Single</span> <span style='color:#808030; '>=</span> <span style='color:#008c00; '>20</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> crtXPos <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Single</span> <span style='color:#808030; '>=</span> <span style='color:#008c00; '>5</span>
+
+<span style='color:#696969; '>'			#Region "Layout transparent image"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTextTransImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"PNG image with alpha transparency:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTextTransImage<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            <span style='color:#800000; font-weight:bold; '>Dim</span> textLayoutInfo <span style='color:#800000; font-weight:bold; '>As</span> PdfLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTextTransImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#696969; '>' layout a PNG image with alpha transparency</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> transparentPdfImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo_small.png"</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> imageLayoutInfo <span style='color:#800000; font-weight:bold; '>As</span> PdfLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>transparentPdfImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> imageLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+<span style='color:#696969; '>'			#Region "Layout resized transparent image"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTextTransImageResized <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"The transparent PNG image below is resized:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTextTransImageResized<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            textLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTextTransImageResized<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#696969; '>' layout a PNG image with alpha transparency</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> transparentResizedPdfImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo_small.png"</span><span style='color:#808030; '>)</span>
+            imageLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>transparentResizedPdfImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> imageLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+<span style='color:#696969; '>'			#Region "Layout rotated transparent image"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTextTransImageRotated <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"The transparent PNG image below is rotated 180 degrees counter clockwise:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTextTransImageRotated<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            textLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTextTransImageRotated<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#696969; '>' rotate the PNG image with alpha transparency 180 degrees counter clockwise</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> transparentRotatedPdfImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo_small.png"</span><span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' translate the coordinates system to image location</span>
+            transparentRotatedPdfImage<span style='color:#008c00; '>.</span>SetTranslation<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' rotate the coordinates system counter clockwise</span>
+            transparentRotatedPdfImage<span style='color:#008c00; '>.</span>SetRotationAngle<span style='color:#808030; '>(</span><span style='color:#008c00; '>180</span><span style='color:#808030; '>)</span>
+            <span style='color:#696969; '>' translate back the coordinates system</span>
+            transparentRotatedPdfImage<span style='color:#008c00; '>.</span>SetTranslation<span style='color:#808030; '>(</span><span style='color:#808030; '>-</span><span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>-</span><span style='color:#008c00; '>50</span><span style='color:#808030; '>)</span>
+
+            imageLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>transparentRotatedPdfImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> <span style='color:#008c00; '>50</span> <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+<span style='color:#696969; '>'			#Region "Layout clipped transparent image"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTextTransClippedImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"The transparent PNG image below is clipped:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTextTransClippedImage<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            textLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTextTransClippedImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#696969; '>' layout a clipped PNG image with alpha transparency</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> transparentClippedPdfImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo_small.png"</span><span style='color:#808030; '>)</span>
+            transparentClippedPdfImage<span style='color:#008c00; '>.</span>ClipRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> RectangleF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>25</span><span style='color:#808030; '>)</span>
+            imageLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>transparentClippedPdfImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> transparentClippedPdfImage<span style='color:#008c00; '>.</span>ClipRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+<span style='color:#696969; '>'			#Region "Layout JPEG image"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTextOpaqueImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"The JPG image below is opaque:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTextOpaqueImage<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            textLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTextOpaqueImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#696969; '>' layout an opaque JPG image</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> opaquePdfImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo_small.jpg"</span><span style='color:#808030; '>)</span>
+
+            imageLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>opaquePdfImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> imageLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+<span style='color:#696969; '>'			#Region "Layout clipped JPEG image"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTextClippedImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"The JPG image below is clipped:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTextClippedImage<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            textLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTextClippedImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#696969; '>' layout a clipped image</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> clippedPdfImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo_small.jpg"</span><span style='color:#808030; '>)</span>
+            clippedPdfImage<span style='color:#008c00; '>.</span>ClipRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> RectangleF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>25</span><span style='color:#808030; '>)</span>
+
+            imageLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>clippedPdfImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> clippedPdfImage<span style='color:#008c00; '>.</span>ClipRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+<span style='color:#696969; '>'			#Region "Layout a vectorial SVG image"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTextSvgImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"Vectorial SVG image:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTextSvgImage<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            textLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTextSvgImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> svgImageCode <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>IO<span style='color:#008c00; '>.</span>File<span style='color:#008c00; '>.</span>ReadAllText<span style='color:#808030; '>(</span>Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Svg\SvgImage.svg"</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> svgImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfHtml<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> svgImageCode<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>Nothing</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> svgLayoutInfo <span style='color:#800000; font-weight:bold; '>As</span> PdfLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>svgImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> svgImage<span style='color:#008c00; '>.</span>ConversionInfo<span style='color:#008c00; '>.</span>PdfRegions<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span><span style='color:#808030; '>.</span>Rectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+<span style='color:#696969; '>'			#Region "Layout JPEG image on multiple pages"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTexMultiPageImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"The JPG image below is laid out on 2 pages:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTexMultiPageImage<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            textLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTexMultiPageImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#696969; '>' layout an opaque JPG image on 2 pages</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> paginatedPdfImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo_big.jpg"</span><span style='color:#808030; '>)</span>
+
+            imageLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>paginatedPdfImage<span style='color:#808030; '>)</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+            <span style='color:#696969; '>' get the last page</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> crtPage <span style='color:#800000; font-weight:bold; '>As</span> PdfPage <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>Pages<span style='color:#808030; '>(</span>imageLayoutInfo<span style='color:#008c00; '>.</span>LastPageIndex<span style='color:#808030; '>)</span>
+            crtYPos <span style='color:#808030; '>=</span> imageLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Bottom <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#Region "Layout the screenshot of a HTML document"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> titleTextHtmlImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"HTML document screenshot:"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span>
+            titleTextHtmlImage<span style='color:#008c00; '>.</span>ForeColor <span style='color:#808030; '>=</span> Color<span style='color:#008c00; '>.</span>Navy
+            textLayoutInfo <span style='color:#808030; '>=</span> crtPage<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>titleTextHtmlImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> textLayoutInfo<span style='color:#008c00; '>.</span>LastPageRectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htmlFile <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Html\Logo.Html"</span>
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htmlRasterImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfHtmlImage<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> htmlFile<span style='color:#808030; '>)</span>
+            htmlRasterImage<span style='color:#008c00; '>.</span>BrowserWidth <span style='color:#808030; '>=</span> <span style='color:#008c00; '>400</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htmlLayoutInfo <span style='color:#800000; font-weight:bold; '>As</span> PdfLayoutInfo <span style='color:#808030; '>=</span> crtPage<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>htmlRasterImage<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' advance the Y position in the PDF page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> htmlRasterImage<span style='color:#008c00; '>.</span>ConversionInfo<span style='color:#008c00; '>.</span>PdfRegions<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span><span style='color:#808030; '>.</span>Rectangle<span style='color:#008c00; '>.</span>Height <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span>
+
+<span style='color:#696969; '>'			#End Region</span>
+
+            <span style='color:#800000; font-weight:bold; '>Try</span>
+                <span style='color:#696969; '>' write the PDF document to a memory buffer</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> pdfBuffer<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Byte</span> <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>WriteToMemory<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' inform the browser about the binary data format</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Type"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"application/pdf"</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' let the browser know how to open the PDF document and the file name</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Disposition"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Format</span><span style='color:#808030; '>(</span><span style='color:#0000e6; '>"attachment; filename=PdfImages.pdf; size={0}"</span><span style='color:#808030; '>,</span> pdfBuffer<span style='color:#008c00; '>.</span>Length<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' write the PDF buffer to HTTP response</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' call End() method of HTTP response to stop ASP.NET page processing</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>End</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Finally</span>
+                document<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Close</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Try</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> IsPostBack <span style='color:#800000; font-weight:bold; '>Then</span>
+                Master<span style='color:#008c00; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"pdfImages"</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Class</span>
+<span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Namespace</span>
+</pre>

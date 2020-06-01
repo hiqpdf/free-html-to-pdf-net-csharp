@@ -1,0 +1,212 @@
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Collections<span style='color:#808030; '>.</span>Generic<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>using</span> HiQPdf<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>namespace</span> HiQPdf_Demo
+<span style='color:#800080; '>{</span>
+    <span style='color:#800000; font-weight:bold; '>public</span> partial <span style='color:#800000; font-weight:bold; '>class</span> HtmlFittingAndScalingOptions <span style='color:#808030; '>:</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>Page
+    <span style='color:#800080; '>{</span>
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> buttonConvertToPdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// create the HTML to PDF converter</span>
+            HtmlToPdf htmlToPdfConverter <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> HtmlToPdf<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set a demo serial number</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ==</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set browser width</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>BrowserWidth <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxBrowserWidth<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set browser height if specified, otherwise use the default</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>textBoxBrowserHeight<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+                htmlToPdfConverter<span style='color:#808030; '>.</span>BrowserHeight <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxBrowserHeight<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set HTML Load timeout</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>HtmlLoadedTimeout <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxLoadHtmlTimeout<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// optionally wait an additional time before starting the conversion</span>
+            <span style='color:#696969; '>// it is not necessary to set this property if the HTML page is not updated after initial load</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>WaitBeforeConvert <span style='color:#808030; '>=</span> <span style='color:#008c00; '>2</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set PDF page size and orientation</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>PageSize <span style='color:#808030; '>=</span> GetSelectedPageSize<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>PageOrientation <span style='color:#808030; '>=</span> GetSelectedPageOrientation<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set PDF page size and orientation</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>PageSize <span style='color:#808030; '>=</span> GetSelectedPageSize<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>PageOrientation <span style='color:#808030; '>=</span> GetSelectedPageOrientation<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set PDF page margins</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>Margins <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfMargins<span style='color:#808030; '>(</span>
+                                        <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxLeftMargin<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxRightMargin<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span>
+                                        <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxTopMargin<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxBottomMargin<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set HTML location and size in PDF page</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>textBoxHtmlLeftLocation<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+                htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>DestX <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>float</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxHtmlLeftLocation<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>textBoxHtmlTopLocation<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+                htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>DestY <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>float</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxHtmlTopLocation<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>textBoxHtmlWidth<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+                htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>DestWidth <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>float</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxHtmlWidth<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>textBoxHtmlHeight<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+                htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>DestHeight <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>float</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxHtmlHeight<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// control if the HTML can be scaled to fit the PDF page width</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>FitPageWidth <span style='color:#808030; '>=</span> checkBoxFitPageWidth<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// control if the HTML can be enlarged to fit the PDF page width when FitPageWidth is true</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>ForceFitPageWidth <span style='color:#808030; '>=</span> checkBoxForceFitPageWidth<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// control if the PDF page can be resized to display the whole HTML content when FitPageWidth is false</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>ResizePageWidth <span style='color:#808030; '>=</span> checkBoxResizePdfPage<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// control if the HTML content can be scaled to fit the PDF page height</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>FitPageHeight <span style='color:#808030; '>=</span> checkBoxFitPageHeight<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// control if the whole HTML content will be rendered in one PDF page without scaling</span>
+            htmlToPdfConverter<span style='color:#808030; '>.</span>Document<span style='color:#808030; '>.</span>PostCardMode <span style='color:#808030; '>=</span> checkBoxPostCardMode<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>         
+
+            <span style='color:#696969; '>// convert HTML to PDF</span>
+            <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> pdfBuffer <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>null</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>radioButtonConvertUrl<span style='color:#808030; '>.</span>Checked<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// convert URL to a PDF memory buffer</span>
+                <span style='color:#800000; font-weight:bold; '>string</span> url <span style='color:#808030; '>=</span> textBoxUrl<span style='color:#808030; '>.</span>Text<span style='color:#800080; '>;</span>
+
+                pdfBuffer <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#808030; '>.</span>ConvertUrlToMemory<span style='color:#808030; '>(</span>url<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+            <span style='color:#800000; font-weight:bold; '>else</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// convert HTML code</span>
+                <span style='color:#800000; font-weight:bold; '>string</span> htmlCode <span style='color:#808030; '>=</span> textBoxHtmlCode<span style='color:#808030; '>.</span>Text<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>string</span> baseUrl <span style='color:#808030; '>=</span> textBoxBaseUrl<span style='color:#808030; '>.</span>Text<span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// convert HTML code to a PDF memory buffer</span>
+                pdfBuffer <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#808030; '>.</span>ConvertHtmlToMemory<span style='color:#808030; '>(</span>htmlCode<span style='color:#808030; '>,</span> baseUrl<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+
+            <span style='color:#696969; '>// inform the browser about the binary data format</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Type</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>application/pdf</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// let the browser know how to open the PDF document, attachment or inline, and the file name</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Disposition</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> String<span style='color:#808030; '>.</span>Format<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>attachment; filename=HtmlFittingAndScaling.pdf; size={0}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> 
+                        pdfBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// write the PDF buffer to HTTP response</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// call End() method of HTTP response to stop ASP.NET page processing</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>End<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>private</span> PdfPageSize GetSelectedPageSize<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>switch</span> <span style='color:#808030; '>(</span>dropDownListPageSizes<span style='color:#808030; '>.</span>SelectedValue<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A0</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A0<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A1<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A10</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A10<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A2<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A3</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A3<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A4</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A4<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A5</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A5<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A6</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A6<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A7</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A7<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A8</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A8<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A9</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A9<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>ArchA</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>ArchA<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>ArchB</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>ArchB<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>ArchC</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>ArchC<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>ArchD</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>ArchD<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>ArchE</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>ArchE<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>B0</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>B0<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>B1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>B1<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>B2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>B2<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>B3</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>B3<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>B4</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>B4<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>B5</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>B5<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Flsa</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>Flsa<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>HalfLetter</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>HalfLetter<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Ledger</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>Ledger<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Legal</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>Legal<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Letter</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>Letter<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Letter11x17</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>Letter11x17<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Note</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>Note<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>default</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> PdfPageSize<span style='color:#808030; '>.</span>A4<span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>private</span> PdfPageOrientation GetSelectedPageOrientation<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#808030; '>(</span>dropDownListPageOrientations<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Portrait</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> ?
+                PdfPageOrientation<span style='color:#808030; '>.</span>Portrait <span style='color:#808030; '>:</span> PdfPageOrientation<span style='color:#808030; '>.</span>Landscape<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>IsPostBack<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                dropDownListPageSizes<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>A4</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+                dropDownListPageOrientations<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Portrait</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+                Master<span style='color:#808030; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>htmlScaling</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                Master<span style='color:#808030; '>.</span>LoadCodeSample<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>HtmlFittingAndScaling</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> checkBoxFitPageWidth_CheckedChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            checkBoxResizePdfPage<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#808030; '>!</span>checkBoxFitPageWidth<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+            checkBoxForceFitPageWidth<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> checkBoxFitPageWidth<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> radioButtonConvertUrl_CheckedChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            panelUrl<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> radioButtonConvertUrl<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+            panelHtmlCode<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#808030; '>!</span>radioButtonConvertUrl<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> radioButtonConvertHtmlCode_CheckedChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            panelUrl<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#808030; '>!</span>radioButtonConvertHtmlCode<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+            panelHtmlCode<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> radioButtonConvertHtmlCode<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+    <span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+</pre>

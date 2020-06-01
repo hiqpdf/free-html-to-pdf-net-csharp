@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <base href="@Url.Content("~/")" />
+    <link href="styles/styles.css" type="text/css" rel="stylesheet" />
+    <link href="DemoFiles/Images/HiQPdf_64x64.ico" rel="shortcut icon" />
+
+    <script>
+        function ToggleTreeViewNode(nid) {
+            var parentNode = document.getElementById(nid);
+            var parentNodeImg = parentNode.childNodes[0];
+            var descNodes = document.getElementById(nid + '_Nodes');
+            if (descNodes.style.display == "none") {
+                descNodes.style.display = "block";
+                parentNodeImg.src = "img/collapse.gif";
+            }
+            else {
+                descNodes.style.display = "none";
+                parentNodeImg.src = "img/expand.gif";
+            }
+        }
+
+        function SelectTreeViewNode(nid) {
+            var node = document.getElementById(nid);
+            node.style.backgroundColor = '#E8E8E8';
+        }
+    </script>
+</head>
+<body>
+    <table style="width: 900px">
+        <tbody>
+            <tr>
+                <td>
+                    <!-- Header -->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <!-- Body -->
+                    <table style="width: 100%">
+                        <tbody>
+                            <tr>
+                                <td style="border: solid 1px Black; vertical-align: top; text-align: left; padding-left: 5px; padding-right: 10px; padding-bottom: 10px; padding-top: 5px; width: 100px">
+                                    <div id="treeView" style="color:Navy;">
+                                        <table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="Welcome" title="Welcome to HiQPdf Demo Application" id="treeView_Welcome">Welcome to HiQPdf Demo</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><a id="treeView_HTML_To_PDF" href="javascript:ToggleTreeViewNode('treeView_HTML_To_PDF')"><img src="img/collapse.gif" alt="Collapse HTML to PDF" style="border-width:0;"></a></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="WelcomeHtmlToPdf" title="HTML To PDF Converter Demo" id="treeView_WelcomeHtmlToPdf">HTML to PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><div id="treeView_HTML_To_PDF_Nodes" style="display:block;">
+                                            <table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ConvertHtmlToPdf" title="Convert HTML to PDF Demo" id="treeView_ConvertHtmlToPdf">HTML to PDF Converter Demo</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ConvertManyHtmlToPdf" title="Convert Many HTML Pages to PDF Demo" id="treeView_ConvertManyHtmlToPdf">Convert Many HTMLs to PDF</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="HtmlFittingAndScalingOptions" title="HTML Fitting and Scaling Options Demo" id="treeView_HtmlFittingAndScalingOptions">HTML Fitting and Scaling Options</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ConvertHtmlRegionToPdf" title="Convert a Selected HTML Region Demo" id="treeView_ConvertHtmlRegionToPdf">Convert a Selected HTML Region</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfHeadersAndFooters" title="Headers and Footers in PDF Demo" id="treeView_PdfHeadersAndFooters">Headers and Footers in PDF</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ConvertHtmlPreservingState" title="Preserve HTML Form and Session Variables Values During HTML to PDF Conversion" id="treeView_ConvertHtmlPreservingState">Convert Web Pages Preserving State</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="SetPdfBackgroundLayer" title="Set PDF Pages Background Layer Demo" id="treeView_SetPdfBackgroundLayer">Set PDF Pages Background</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="HtmlElementsPositionInPdf" title="HTML Elements Bounds in PDF Demo" id="treeView_HtmlElementsPositionInPdf">HTML Elements Position in PDF</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ConversionTriggeringMode" title="Conversion Triggering Mode Demo" id="treeView_ConversionTriggeringMode">Set Conversion Triggering Mode</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="AutoOutlinesAndLinks" title="Auto Generated Outlines and Links Demo" id="treeView_AutoOutlinesAndLinks">Auto Create Outlines and Links</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="AutoCreateTableOfContents" title="Auto Create Table of Contents Demo" id="treeView_AutoCreateTableOfContents">Auto Create Table of Contents</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="AutoCreatePdfForms" title="Auto Create PDF Forms Demo" id="treeView_AutoCreatePdfForms">Auto Create PDF Forms</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="AutoRepeatHtmlHeaderAndFooter" title="Repeat Table Header and Footer Demo" id="treeView_AutoRepeatHtmlHeaderAndFooter">Repeat Table Header and Footer</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfPageBreaksControl" title="PDF Page Breaks Control with CSS Demo" id="treeView_PdfPageBreaksControl">Control PDF Page Breaks with CSS</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="MediaTypeSelection" title="Select Media Type for Rendering Demo" id="treeView_MediaTypeSelection">Select Media Type for Rendering</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="WebFonts" title="Convert HTML Documents with Web Fonts Demo" id="treeView_WebFonts">Web Fonts Advanced Support</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfSecuritySettings" title="Set PDF Security Demo" id="treeView_PdfSecuritySettings">PDF Security Settings</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ConvertHtmlToImage" title="Convert HTML to Image Demo" id="treeView_ConvertHtmlToImage">HTML to Image</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ConvertHtmlToSvg" title="Convert HTML to SVG Demo" id="treeView_ConvertHtmlToSvg">HTML to SVG</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><a id="treeView_PDF_Forms" href="javascript:ToggleTreeViewNode('treeView_PDF_Forms')"><img src="img/collapse.gif" alt="Collapse PDF Forms" style="border-width:0;"></a></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="WelcomePdfForms" title="PDF Forms Demo" id="treeView_WelcomePdfForms">PDF Forms</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><div id="treeView_PDF_Forms_Nodes" style="display:block;">
+                                            <table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="CreateAndSubmitForms" title="Create and Submit PDF Forms Demo" id="treeView_CreateAndSubmitForms">Create and Submit PDF Forms</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><div style="width:20px;height:1px"></div></td>
+                                                        <td><img src="img/item.gif" alt=""></td>
+                                                        <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="FillAndSaveForms" title="Fill and Save PDF Forms Demo" id="treeView_FillAndSaveForms">Fill and Save PDF Forms</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfOpenAction" title="PDF Open Action Demo" id="treeView_PdfOpenAction">Set an Open Action in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfOutlinesAndLinks" title="PDF Outlines and Links Demo" id="treeView_PdfOutlinesAndLinks">Create Outlines and Links in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="AttachmentsAndFileLinks" title="Attachments and File Links Demo" id="treeView_AttachmentsAndFileLinks">Create File Attachments in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfHtmlObjectsDemo" title="PDF HTML Objects Demo" id="treeView_PdfHtmlObjectsDemo">Add HTML Objects in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfTextDemo" title="PDF Text Demo" id="treeView_PdfTextDemo">Add Text Objects in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfImages" title="PDF Images Demo" id="treeView_PdfImages">Add Image Objects in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfGraphics" title="PDF Graphics Demo" id="treeView_PdfGraphics">Add Graphic Objects in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfDocumentSecuritySettings" title="Set PDF Document Security Demo" id="treeView_PdfDocumentSecuritySettings">PDF Document Security</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="DigitalSignatures" title="Add Digital Signatures in PDF Demo" id="treeView_DigitalSignatures">Add Digital Signatures in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="EditPdf" title="Edit PDF Demo" id="treeView_EditPdf">Edit PDF Documents</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="MergePdf" title="Merge PDF Demo" id="treeView_MergePdf">Merge PDF Documents</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ExtractTextFromPdf" title="Extract Text from PDF Demo" id="treeView_ExtractTextFromPdf">Extract Text from PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="SearchTextInPdf" title="Search Text in PDF Demo" id="treeView_SearchTextInPdf">Search Text in PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="ExtractImagesFromPdf" title="Extract Images from PDF Demo" id="treeView_ExtractImagesFromPdf">Extract Images from PDF</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="RasterizePdfPagesToImages" title="Rasterize PDF Pages to Images Demo" id="treeView_RasterizePdfPagesToImages">Rasterize PDF Pages to Images</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table><table cellpadding="0" cellspacing="0" style="border-width:0;">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="img/item.gif" alt=""></td>
+                                                    <td style="white-space:nowrap;"><a class="treeViewNodeStyle_0" href="PdfToHtmlConverter" title="Convert PDF to HTML Demo" id="treeView_PdfToHtmlConverter">Convert PDF to HTML</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Left -->
+                                </td>
+                                <td style="width: 5px">
+                                    <!-- Middle -->
+                                </td>
+                                <td style="border: solid 1px Black; vertical-align: top; text-align: left; padding-left: 10px; padding-right: 10px; padding-bottom: 10px; padding-top: 5px;">
+                                    <!-- Right -->
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    @RenderBody()
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <!-- Footer -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

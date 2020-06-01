@@ -1,0 +1,70 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Configuration
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Collections
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>Security
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>WebControls
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>WebControls<span style='color:#008c00; '>.</span>WebParts
+<span style='color:#800000; font-weight:bold; '>Imports</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>HtmlControls
+
+<span style='color:#800000; font-weight:bold; '>Imports</span> HiQPdf
+
+<span style='color:#800000; font-weight:bold; '>Namespace</span> HiQPdf_Demo
+    Partial <span style='color:#800000; font-weight:bold; '>Public</span> <span style='color:#800000; font-weight:bold; '>Class</span> ReplaceHtmlElements
+        <span style='color:#800000; font-weight:bold; '>Inherits</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>Page
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> buttonCreatePdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htmlToPdfConverter <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> HtmlToPdf<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' set a demo serial number</span>
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ=="</span>
+
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>SelectedHtmlElements <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> { textBoxImageSelector<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span> }
+            htmlToPdfConverter<span style='color:#008c00; '>.</span>HiddenHtmlElements <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> { textBoxImageSelector<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span> }
+
+            <span style='color:#800000; font-weight:bold; '>Dim</span> document <span style='color:#800000; font-weight:bold; '>As</span> PdfDocument <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Nothing</span>
+            <span style='color:#800000; font-weight:bold; '>Try</span>
+                document <span style='color:#808030; '>=</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>ConvertUrlToPdfDocument<span style='color:#808030; '>(</span>textBoxUrl<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#800000; font-weight:bold; '>For</span> <span style='color:#800000; font-weight:bold; '>Each</span> htmlImageInfo <span style='color:#800000; font-weight:bold; '>As</span> HtmlElementInfo <span style='color:#800000; font-weight:bold; '>In</span> htmlToPdfConverter<span style='color:#008c00; '>.</span>ConversionInfo<span style='color:#008c00; '>.</span>SelectedHtmlElementsInfo
+                    <span style='color:#800000; font-weight:bold; '>Dim</span> imagePdfRegion <span style='color:#800000; font-weight:bold; '>As</span> PdfPageRegion <span style='color:#808030; '>=</span> htmlImageInfo<span style='color:#008c00; '>.</span>PdfRegions<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+                    <span style='color:#800000; font-weight:bold; '>Dim</span> imagePdfPage <span style='color:#800000; font-weight:bold; '>As</span> PdfPage <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>Pages<span style='color:#808030; '>(</span>imagePdfRegion<span style='color:#008c00; '>.</span>PageIndex<span style='color:#808030; '>)</span>
+
+                    <span style='color:#696969; '>' create the image element</span>
+                    <span style='color:#800000; font-weight:bold; '>Dim</span> pdfImage <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfImage<span style='color:#808030; '>(</span>imagePdfRegion<span style='color:#008c00; '>.</span>Rectangle<span style='color:#808030; '>,</span> Server<span style='color:#008c00; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"~"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"\DemoFiles\Images\HiQPdfLogo_Modified.png"</span><span style='color:#808030; '>)</span>
+                    pdfImage<span style='color:#008c00; '>.</span>ClipRectangle <span style='color:#808030; '>=</span> imagePdfRegion<span style='color:#008c00; '>.</span>Rectangle
+
+                    imagePdfPage<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>pdfImage<span style='color:#808030; '>)</span>
+                <span style='color:#800000; font-weight:bold; '>Next</span> htmlImageInfo
+
+                <span style='color:#696969; '>' write the PDF document to a memory buffer</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> pdfBuffer<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Byte</span> <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>WriteToMemory<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' inform the browser about the binary data format</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Type"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"application/pdf"</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' let the browser know how to open the PDF document and the file name</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Disposition"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Format</span><span style='color:#808030; '>(</span><span style='color:#0000e6; '>"attachment; filename=ReplaceHtmlElements.pdf; size={0}"</span><span style='color:#808030; '>,</span> pdfBuffer<span style='color:#008c00; '>.</span>Length<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' write the PDF buffer to HTTP response</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span>
+
+                <span style='color:#696969; '>' call End() method of HTTP response to stop ASP.NET page processing</span>
+                HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>End</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#800000; font-weight:bold; '>Finally</span>
+                <span style='color:#800000; font-weight:bold; '>If</span> document IsNot <span style='color:#800000; font-weight:bold; '>Nothing</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+                    document<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Close</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+                <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Try</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+        <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> IsPostBack <span style='color:#800000; font-weight:bold; '>Then</span>
+                <span style='color:#800000; font-weight:bold; '>Dim</span> pageUri <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>String</span> <span style='color:#808030; '>=</span> HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Request<span style='color:#008c00; '>.</span>Url<span style='color:#008c00; '>.</span>AbsoluteUri
+                textBoxUrl<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span> <span style='color:#808030; '>=</span> pageUri<span style='color:#008c00; '>.</span>Substring<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> pageUri<span style='color:#008c00; '>.</span>LastIndexOf<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"/"</span>c<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>&amp;</span> <span style='color:#0000e6; '>"/DemoFiles/Html/ReplaceImage.htm"</span>
+
+                Master<span style='color:#008c00; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"replaceHtmlElements"</span><span style='color:#808030; '>)</span>
+            <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Class</span>
+<span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Namespace</span>
+</pre>

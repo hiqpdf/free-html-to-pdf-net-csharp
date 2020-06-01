@@ -1,0 +1,238 @@
+﻿
+@{
+    ViewBag.Title = "PDF Forms - Create and Submit Forms";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    SelectTreeViewNode("treeView_CreateAndSubmitForms");
+</script>
+
+@using (Html.BeginForm("CreatePdf", "CreateAndSubmitForms", FormMethod.Post))
+{
+    <table cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    In this demo you can learn how to create a PDF form with various fields and how
+                    to submit the values entered in the form to a web page. You can choose what type
+                    of fields to include in form and also the URL where to GET or POST the values entered
+                    in form.<br>
+                    <br>
+                    When the Submit button of the PDF form is pressed, the PDF viewer will make a GET
+                    or a POST request to the URL below function of the selected method.<br>
+                    <br>
+                    When the selected method is GET the form fields names and values will be added as
+                    key-value pairs in the query string of the URL and they can be accessed in ASP.NET
+                    using the Request.QueryString collection.<br>
+                    <br>
+                    When the selected method is POST the form fields names and values will be posted
+                    as key-value pairs to the URL and they can be accessed in ASP.NET using the Request.Form
+                    collection.
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight:bold;"><input id="checkBoxAddCheckBox" type="checkbox" name="checkBoxAddCheckBox" checked="checked"><label for="checkBoxAddCheckBox">Add Check Box field</label></span>
+                                </td>
+                                <td style="width: 40px"></td>
+                                <td>
+                                    <input id="checkBoxCheckedState" type="checkbox" name="checkBoxCheckedState" checked="checked"><label for="checkBoxCheckedState">Initial checked state</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 15px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight:bold;"><input id="checkBoxAddTextBox" type="checkbox" name="checkBoxAddTextBox" checked="checked"><label for="checkBoxAddTextBox">Add Text Box field</label></span>
+                                </td>
+                                <td style="width: 50px"></td>
+                                <td>
+                                    Initial Text:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxInitialText" type="text" value="Please enter some text" id="textBoxInitialText" style="width:290px;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="height: 5px"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td colspan="3">
+                                    <table cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td style="margin-left: 40px">
+                                                    <span style="font-weight:normal;"><input id="checkBoxMultiline" type="checkbox" name="checkBoxMultiline" checked="checked"><label for="checkBoxMultiline">Multiline Text Box</label></span>
+                                                </td>
+                                                <td style="width: 10px"></td>
+                                                <td>
+                                                    <span style="font-weight:normal;"><input id="checkBoxIsPassword" type="checkbox" name="checkBoxIsPassword"><label for="checkBoxIsPassword">Is Password</label></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 15px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight:bold;"><input id="checkBoxAddListBox" type="checkbox" name="checkBoxAddListBox" checked="checked"><label for="checkBoxAddListBox">Add List Box field</label></span>
+                                </td>
+                                <td style="width: 53px"></td>
+                                <td>
+                                    Values:
+                                </td>
+                                <td style="width: 30px"></td>
+                                <td>
+                                    <input name="textBoxListBoxValues" type="text" value="List Value 1,List Value 2,List Value 3,List Value 4" id="textBoxListBoxValues" style="width:290px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 15px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight:bold;"><input id="checkBoxAddComboBox" type="checkbox" name="checkBoxAddComboBox" checked="checked"><label for="checkBoxAddComboBox">Add Combo Box field</label></span>
+                                </td>
+                                <td style="width: 35px"></td>
+                                <td>
+                                    Values:
+                                </td>
+                                <td style="width: 30px"></td>
+                                <td style="margin-left: 40px">
+                                    <input name="textBoxComboBoxValues" type="text" value="Combo Value 1,Combo Value 2,Combo Value 3" id="textBoxComboBoxValues" style="width:290px;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="height: 5px"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td colspan="3">
+                                    <table cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span style="font-weight:normal;"><input id="checkBoxEditableCombo" type="checkbox" name="checkBoxEditableCombo" checked="checked"><label for="checkBoxEditableCombo">Editable Combo Box</label></span>
+                                                </td>
+                                                <td style="width: 10px"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 15px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="font-weight:bold;"><input id="checkBoxAddRadioButtons" type="checkbox" name="checkBoxAddRadioButtons" checked="checked"><label for="checkBoxAddRadioButtons">Add Radio Buttons Group field</label></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 15px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="font-weight:bold;"><input id="checkBoxAddResetButton" type="checkbox" name="checkBoxAddResetButton" checked="checked"><label for="checkBoxAddResetButton">Add Form Reset Button</label></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 15px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="padding-bottom: 5px; font-weight: bold">
+                                    Submit URL
+                                </td>
+                                <td style="width: 50px"></td>
+                                <td>
+                                    <input name="textBoxSubmitUrl" type="text" value="http://www.hiqpdf.com/formsubmitaction/" id="textBoxSubmitUrl" style="width:350px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 15px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: bold">
+                                    Submit Method:
+                                </td>
+                                <td style="width: 25px"></td>
+                                <td>
+                                    <input id="radioButtonPost" type="radio" name="SubmitMethod" value="radioButtonPost" checked="checked"><label for="radioButtonPost">POST</label>
+                                </td>
+                                <td style="width: 40px"></td>
+                                <td>
+                                    <input id="radioButtonGet" type="radio" name="SubmitMethod" value="radioButtonGet"><label for="radioButtonGet">GET</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="buttonCreatePdf" value="Create PDF" id="buttonCreatePdf">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
