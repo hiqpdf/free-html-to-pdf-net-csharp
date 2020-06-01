@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Attachments and File Links";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    SelectTreeViewNode("treeView_AttachmentsAndFileLinks");
+</script>
+
+@using (Html.BeginForm("CreatePdf", "AttachmentsAndFileLinks", FormMethod.Post))
+{
+    <table cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    In this demo you can learn how to attach external files and streams to a PDF document.
+                    When you create the attachment you can also give a page and a location in page where
+                    to create a link to the attachment marked with an icon.
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="buttonCreatePdf" value="Create PDF with Attachments" id="buttonCreatePdf">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+

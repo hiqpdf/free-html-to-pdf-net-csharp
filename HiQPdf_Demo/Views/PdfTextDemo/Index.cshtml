@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "PDF Text Demo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    SelectTreeViewNode("treeView_PdfTextDemo");
+</script>
+
+@using (Html.BeginForm("CreatePdf", "PdfTextDemo", FormMethod.Post))
+{
+    <table cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    In this demo you can learn how to layout text objects in a PDF document with various
+                    layouts and fonts. The generated PDF document will contain horizontal and rotated
+                    text objects, text with true type fonts and text with PDF standard fonts.<br>
+                    <br>
+                    There are three main layouting options for the text exemplified in ths demo: the
+                    text is rendered at a given location and has free width and height, the text is
+                    limited in width or the text is limited both in width and height. There is also
+                    an example where the text is automatically laid out on the next page when it gets
+                    to the bottom of a PDF page.
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="buttonCreatePdf" value="Create PDF with Text" id="buttonCreatePdf">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+

@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Search Text in PDF Demo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    String crtPageUri = Request.Url.AbsoluteUri;
+    String pageUri = crtPageUri.Substring(0, crtPageUri.Length - "SearchTextInPdf".Length);
+    ViewData["PdfUrl"] = pageUri + "DemoFiles/Pdf/InputPdf.pdf";
+}
+
+<script>
+    SelectTreeViewNode("treeView_SearchTextInPdf");
+</script>
+
+@using (Html.BeginForm("SearchText", "SearchTextInPdf", FormMethod.Post))
+{
+    <table cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    In this demo you can learn how to search a text in a PDF document. You can choose the text to search, you can choose to match
+                    or not the case or whole word only and you can choose the range of PDF pages where to search the text. The found text is highlighted
+                    in the original PDF.
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    PDF document:
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a id="hyperLinkOpenPdf" href="@(ViewData["PdfUrl"].ToString())" target="_blank">Open the Input PDF Document</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    Text to search:
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input name="textBoxTextToSearch" type="text" value="HiQPdf" id="textBoxTextToSearch" style="width:373px;">
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    Settings
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input id="checkBoxMatchCase" type="checkbox" name="checkBoxMatchCase"><label for="checkBoxMatchCase">Match Case</label>
+                                </td>
+                                <td style="width: 20px;"></td>
+                                <td>
+                                    <input id="checkBoxMatchWholeWord" type="checkbox" name="checkBoxMatchWholeWord"><label for="checkBoxMatchWholeWord">Match Whole Word</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    Page Range
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    From:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxFromPage" type="text" value="1" id="textBoxFromPage" style="width:35px;">
+                                </td>
+                                <td style="width: 30px"></td>
+                                <td>
+                                    To:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxToPage" type="text" id="textBoxToPage" style="width:35px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="buttonSearchText" value="Search" id="buttonSearchText">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+

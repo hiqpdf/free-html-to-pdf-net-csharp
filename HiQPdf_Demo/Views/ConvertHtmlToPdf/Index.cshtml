@@ -1,0 +1,385 @@
+﻿
+@{
+    ViewBag.Title = "Convert HTML to PDF Demo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function toggleHtmlSource(convertUrl) {
+        var urlPanel = document.getElementById("panelUrl");
+        var htmlStringPanel = document.getElementById("panelHtmlCode");
+
+        if (convertUrl && urlPanel.style.display == "none") {
+            urlPanel.style.display = "block";
+            htmlStringPanel.style.display = "none";
+        }
+        else if (!convertUrl && htmlStringPanel.style.display == "none") {
+            urlPanel.style.display = "none";
+            htmlStringPanel.style.display = "block";
+        }
+    }
+
+    function toggleWaitTimePanel(triggerMode) {
+        var panelEnabled = triggerMode == "WaitTime";
+        var waitTimePanel = document.getElementById("panelWaitTime");
+
+        if (panelEnabled)
+            waitTimePanel.style.display = "block";
+        else
+            waitTimePanel.style.display = "none";
+    }
+
+    SelectTreeViewNode("treeView_ConvertHtmlToPdf");
+</script>
+
+@using (Html.BeginForm("ConvertToPdf", "ConvertHtmlToPdf", FormMethod.Post))
+{
+    <table cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    In this demo you can convert an URL a custom HTML code to PDF. You can control the
+                    PDF page size and orientation, PDF page margins, browser width, add header and footer
+                    with page numbering, embed true type fonts in the generated PDF document.<br>
+                    <br>
+                    As a security option it is possible to set a password requested when the created
+                    PDF document document is opened and it is possible to disable the document printing
+                    when it is opened in a viewer.
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight:bold;"><input id="radioButtonConvertUrl" type="radio" name="UrlOrHtmlCode" value="radioButtonConvertUrl" checked="checked" onclick="javascript: toggleHtmlSource(true)"><label for="radioButtonConvertUrl">Convert URL</label></span>
+                                </td>
+                                <td style="width: 50px"></td>
+                                <td>
+                                    <span style="font-weight:bold;"><input id="radioButtonConvertHtmlCode" type="radio" name="UrlOrHtmlCode" value="radioButtonConvertHtmlCode" onclick="javascript: toggleHtmlSource(false)"><label for="radioButtonConvertHtmlCode">Convert HTML Code</label></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="panelUrl">
+
+                        <table cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td style="padding-bottom: 5px">
+                                        URL
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input name="textBoxUrl" type="text" value="http://www.hiqpdf.com" id="textBoxUrl" style="width:590px;">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div id="panelHtmlCode" style="display:none">
+
+                        <table cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        HTML
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <textarea name="textBoxHtmlCode" rows="2" cols="20" id="textBoxHtmlCode" style="height:200px;width:590px;">&lt;/br&gt;
+&lt;/br&gt;
+Please enter the HTML code to convert and the base URL to access the external images, scripts and css having relative URLs in the HTML code to convert.
+                                            </textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 10px"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Base URL
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input name="textBoxBaseUrl" type="text" id="textBoxBaseUrl" style="width:590px;">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    PDF Settings
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Page Size:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td style="width: 110px">
+                                    <select name="dropDownListPageSizes" id="dropDownListPageSizes">
+                                        <option value="A0">A0</option>
+                                        <option value="A1">A1</option>
+                                        <option value="A2">A2</option>
+                                        <option value="A3">A3</option>
+                                        <option selected="selected" value="A4">A4</option>
+                                        <option value="A5">A5</option>
+                                        <option value="A6">A6</option>
+                                        <option value="A7">A7</option>
+                                        <option value="A8">A8</option>
+                                        <option value="A9">A9</option>
+                                        <option value="A10">A10</option>
+                                        <option value="B0">B0</option>
+                                        <option value="B1">B1</option>
+                                        <option value="B2">B2</option>
+                                        <option value="B3">B3</option>
+                                        <option value="B4">B4</option>
+                                        <option value="B5">B5</option>
+                                        <option value="ArchA">ArchA</option>
+                                        <option value="ArchB">ArchB</option>
+                                        <option value="ArchC">ArchC</option>
+                                        <option value="ArchD">ArchD</option>
+                                        <option value="ArchE">ArchE</option>
+                                        <option value="Flsa">Flsa</option>
+                                        <option value="HalfLetter">HalfLetter</option>
+                                        <option value="Ledger">Ledger</option>
+                                        <option value="Legal">Legal</option>
+                                        <option value="Letter">Letter</option>
+                                        <option value="Letter11x17">Letter11x17</option>
+                                        <option value="Note">Note</option>
+
+                                    </select>
+                                </td>
+                                <td style="width: 45px"></td>
+                                <td>
+                                    Page Orientation:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <select name="dropDownListPageOrientations" id="dropDownListPageOrientations">
+                                        <option selected="selected" value="Portrait">Portrait</option>
+                                        <option value="Landscape">Landscape</option>
+
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input id="checkBoxAddHeader" type="checkbox" name="checkBoxAddHeader"><label for="checkBoxAddHeader">Add Header</label>
+                                </td>
+                                <td style="width: 20px;"></td>
+                                <td>
+                                    <input id="checkBoxAddFooter" type="checkbox" name="checkBoxAddFooter"><label for="checkBoxAddFooter">Add Footer</label>
+                                </td>
+                                <td style="width: 20px;"></td>
+                                <td>
+                                    <input id="checkBoxFontEmbedding" type="checkbox" name="checkBoxFontEmbedding" checked="checked"><label for="checkBoxFontEmbedding">Font Embedding</label>
+                                </td>
+                                <td style="width: 20px;"></td>
+                                <td>
+                                    <input id="checkBoxPdfA" type="checkbox" name="checkBoxPdfA"><label for="checkBoxPdfA">PDF/A</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    Browser Settings
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Browser Width:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxBrowserWidth" type="text" value="1200" id="textBoxBrowserWidth" style="width:35px;">
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    px
+                                </td>
+                                <td style="width: 65px"></td>
+                                <td>
+                                    Browser Height:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxBrowserHeight" type="text" id="textBoxBrowserHeight" style="width:35px;">
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    px
+                                </td>
+                                <td style="width: 65px"></td>
+                                <td>
+                                    Timeout:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxLoadHtmlTimeout" type="text" value="120" id="textBoxLoadHtmlTimeout" style="width:30px;">
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    sec
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="height: 30px; font-weight: normal">
+                                    Triggering Mode:
+                                </td>
+                                <td style="width: 5px; height: 30px;"></td>
+                                <td style="height: 30px;">
+                                    <select name="dropDownListTriggeringMode" onchange="javascript: toggleWaitTimePanel(this.value)" id="dropDownListTriggeringMode">
+                                        <option value="Auto">Auto</option>
+                                        <option value="Manual">Manual</option>
+                                        <option selected="selected" value="WaitTime">WaitTime</option>
+
+                                    </select>
+                                </td>
+                                <td style="width: 28px; height: 30px;"></td>
+                                <td style="height: 30px">
+                                    <div id="panelWaitTime">
+
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        Wait Time:
+                                                    </td>
+                                                    <td style="width: 5px"></td>
+                                                    <td>
+                                                        <input name="textBoxWaitTime" type="text" value="2" id="textBoxWaitTime" style="width:30px;">
+                                                    </td>
+                                                    <td style="width: 5px"></td>
+                                                    <td>
+                                                        sec
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">
+                    Security
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Set Open Password:
+                                </td>
+                                <td style="width: 5px"></td>
+                                <td>
+                                    <input name="textBoxOpenPassword" type="text" id="textBoxOpenPassword" style="width:175px;">
+                                </td>
+                                <td style="width: 20px"></td>
+                                <td>
+                                    <input id="checkBoxAllowPrinting" type="checkbox" name="checkBoxAllowPrinting" checked="checked"><label for="checkBoxAllowPrinting">Allow Printing</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 30px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="checkBoxOpenInline" type="checkbox" name="checkBoxOpenInline"><label for="checkBoxOpenInline">Open PDF document inline in browser</label>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="buttonConvertToPdf" value="Convert to PDF" id="buttonConvertToPdf">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+

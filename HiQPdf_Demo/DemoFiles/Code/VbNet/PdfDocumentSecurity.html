@@ -1,0 +1,204 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>Imports</span> HiQPdf
+
+<span style='color:#800000; font-weight:bold; '>Public</span> <span style='color:#800000; font-weight:bold; '>Class</span> PdfDocumentSecuritySettings
+    <span style='color:#800000; font-weight:bold; '>Inherits</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>Web<span style='color:#008c00; '>.</span>UI<span style='color:#008c00; '>.</span>Page
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> buttonConvertToPdf_Click<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> buttonConvertToPdf<span style='color:#008c00; '>.</span>Click
+        <span style='color:#696969; '>' create an empty PDF document</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> document <span style='color:#800000; font-weight:bold; '>As</span> PdfDocument <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfDocument<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' set a demo serial number</span>
+        document<span style='color:#008c00; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ=="</span>
+
+        <span style='color:#696969; '>' set encryption mode</span>
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>EncryptionMode <span style='color:#808030; '>=</span> GetSelectedEncryptionMode<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#696969; '>' set encryption level</span>
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>EncryptionLevel <span style='color:#808030; '>=</span> GetSelectedEncryptionLevel<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' set open password</span>
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>OpenPassword <span style='color:#808030; '>=</span> textBoxOpenPassword<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+        <span style='color:#696969; '>' set permissions password</span>
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>PermissionsPassword <span style='color:#808030; '>=</span> textBoxPermissionsPassword<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span>
+
+        <span style='color:#696969; '>' set PDF document permissions</span>
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>AllowPrinting <span style='color:#808030; '>=</span> checkBoxAllowPrint<span style='color:#008c00; '>.</span>Checked
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>AllowCopyContent <span style='color:#808030; '>=</span> checkBoxAllowCopy<span style='color:#008c00; '>.</span>Checked
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>AllowEditContent <span style='color:#808030; '>=</span> checkBoxAllowEdit<span style='color:#008c00; '>.</span>Checked
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>AllowEditAnnotations <span style='color:#808030; '>=</span> checkBoxAllowEditAnnotations<span style='color:#008c00; '>.</span>Checked
+        document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>AllowFormFilling <span style='color:#808030; '>=</span> checkBoxAllowFillForms<span style='color:#008c00; '>.</span>Checked
+
+        <span style='color:#696969; '>' set a default permissions password if an open password was set without settings a permissions password</span>
+        <span style='color:#696969; '>' or if any of the permissions does not have the default value</span>
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>PermissionsPassword <span style='color:#800000; font-weight:bold; '>Is</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Empty</span> AndAlso
+            <span style='color:#808030; '>(</span>document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>OpenPassword IsNot <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Empty</span> <span style='color:#800000; font-weight:bold; '>Or</span> <span style='color:#800000; font-weight:bold; '>Not</span> IsDefaultPermission<span style='color:#808030; '>(</span>document<span style='color:#008c00; '>.</span>Security<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            document<span style='color:#008c00; '>.</span>Security<span style='color:#008c00; '>.</span>PermissionsPassword <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"admin"</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#696969; '>' add a page to document with the default size and orientation</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> page1 <span style='color:#800000; font-weight:bold; '>As</span> PdfPage <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>AddPage<span style='color:#808030; '>(</span>PdfPageSize<span style='color:#008c00; '>.</span>A4<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfDocumentMargins<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> PdfPageOrientation<span style='color:#008c00; '>.</span>Portrait<span style='color:#808030; '>)</span>
+
+        <span style='color:#696969; '>' an object to be set with HTML layout info after conversion</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> htmlLayoutInfo <span style='color:#800000; font-weight:bold; '>As</span> PdfLayoutInfo <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>Nothing</span>
+        <span style='color:#800000; font-weight:bold; '>Try</span>
+            <span style='color:#696969; '>' create the HTML object from URL</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> htmlObject <span style='color:#800000; font-weight:bold; '>As</span> PdfHtml <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>New</span> PdfHtml<span style='color:#808030; '>(</span>textBoxUrl<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Text</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' optionally wait an additional time before starting the conversion</span>
+            htmlObject<span style='color:#008c00; '>.</span>WaitBeforeConvert <span style='color:#808030; '>=</span> <span style='color:#008c00; '>2</span>
+
+            <span style='color:#696969; '>' layout the HTML object in PDF</span>
+            htmlLayoutInfo <span style='color:#808030; '>=</span> page1<span style='color:#008c00; '>.</span>Layout<span style='color:#808030; '>(</span>htmlObject<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' write the PDF document to a memory buffer</span>
+            <span style='color:#800000; font-weight:bold; '>Dim</span> pdfBuffer <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Byte</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> document<span style='color:#008c00; '>.</span>WriteToMemory<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' inform the browser about the binary data format</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Type"</span><span style='color:#808030; '>,</span> <span style='color:#0000e6; '>"application/pdf"</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' let the browser know how to open the PDF document and the file name</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Content-Disposition"</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>String</span><span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Format</span><span style='color:#808030; '>(</span><span style='color:#0000e6; '>"attachment; filename=PdfDocumentSecuritySettings.pdf; size={0}"</span><span style='color:#808030; '>,</span>
+                        pdfBuffer<span style='color:#008c00; '>.</span>Length<span style='color:#008c00; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' write the PDF buffer to HTTP response</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span>
+
+            <span style='color:#696969; '>' call End() method of HTTP response to stop ASP.NET page processing</span>
+            HttpContext<span style='color:#008c00; '>.</span>Current<span style='color:#008c00; '>.</span>Response<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>End</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>Finally</span>
+            document<span style='color:#008c00; '>.</span><span style='color:#800000; font-weight:bold; '>Close</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Try</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#800000; font-weight:bold; '>Private</span> <span style='color:#800000; font-weight:bold; '>Function</span> IsDefaultPermission<span style='color:#808030; '>(</span>pdfSecurity <span style='color:#800000; font-weight:bold; '>As</span> PdfDocumentSecurity<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Boolean</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>pdfSecurity<span style='color:#008c00; '>.</span>AllowAssembling<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>pdfSecurity<span style='color:#008c00; '>.</span>AllowCopyAccessibilityContent<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>pdfSecurity<span style='color:#008c00; '>.</span>AllowCopyContent<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>pdfSecurity<span style='color:#008c00; '>.</span>AllowEditAnnotations<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>pdfSecurity<span style='color:#008c00; '>.</span>AllowEditContent<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>pdfSecurity<span style='color:#008c00; '>.</span>AllowFormFilling<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>pdfSecurity<span style='color:#008c00; '>.</span>AllowHighResolutionPrinting<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>pdfSecurity<span style='color:#008c00; '>.</span>AllowPrinting<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>Return</span> <span style='color:#0f4d75; '>True</span>
+
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Function</span>
+
+
+    <span style='color:#800000; font-weight:bold; '>Private</span> <span style='color:#800000; font-weight:bold; '>Function</span> GetSelectedEncryptionMode<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> PdfEncryptionMode
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>dropDownListEncryptionMode<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#800000; font-weight:bold; '>Is</span> <span style='color:#800000; font-weight:bold; '>Nothing</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionMode<span style='color:#008c00; '>.</span>RC4
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>Select</span> <span style='color:#800000; font-weight:bold; '>Case</span> dropDownListEncryptionMode<span style='color:#008c00; '>.</span>SelectedValue
+            <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"RC4"</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionMode<span style='color:#008c00; '>.</span>RC4
+            <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"AES"</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionMode<span style='color:#008c00; '>.</span>AES
+            <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#800000; font-weight:bold; '>Else</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionMode<span style='color:#008c00; '>.</span>RC4
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Select</span>
+
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Function</span>
+
+
+    <span style='color:#800000; font-weight:bold; '>Private</span> <span style='color:#800000; font-weight:bold; '>Function</span> GetSelectedEncryptionLevel<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>As</span> PdfEncryptionLevel
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>dropDownListEncryptionLevel<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#800000; font-weight:bold; '>Is</span> <span style='color:#800000; font-weight:bold; '>Nothing</span><span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>High
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>Select</span> <span style='color:#800000; font-weight:bold; '>Case</span> dropDownListEncryptionLevel<span style='color:#008c00; '>.</span>SelectedValue
+            <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Low"</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>Low
+            <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"High"</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>High
+            <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#0000e6; '>"Very High"</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>VeryHigh
+            <span style='color:#800000; font-weight:bold; '>Case</span> <span style='color:#800000; font-weight:bold; '>Else</span>
+                <span style='color:#800000; font-weight:bold; '>Return</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>High
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Select</span>
+
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Function</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>ByVal</span> sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>ByVal</span> e <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>System</span><span style='color:#008c00; '>.</span>EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> <span style='color:#800000; font-weight:bold; '>Me</span><span style='color:#008c00; '>.</span>Load
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> <span style='color:#808030; '>(</span>IsPostBack<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+
+            dropDownListEncryptionMode<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"RC4"</span>
+            dropDownListEncryptionLevel<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"High"</span>
+
+            Master<span style='color:#008c00; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"pdfDocumentSecurity"</span><span style='color:#808030; '>)</span>
+
+            Master<span style='color:#008c00; '>.</span>LoadCodeSample<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"PdfDocumentSecurity"</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> dropDownListEncryptionMode_SelectedIndexChanged<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> dropDownListEncryptionMode<span style='color:#008c00; '>.</span>SelectedIndexChanged
+        <span style='color:#800000; font-weight:bold; '>Dim</span> encryptionMode <span style='color:#800000; font-weight:bold; '>As</span> PdfEncryptionMode <span style='color:#808030; '>=</span> GetSelectedEncryptionMode<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> encryptionLevel <span style='color:#800000; font-weight:bold; '>As</span> PdfEncryptionLevel <span style='color:#808030; '>=</span> GetSelectedEncryptionLevel<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>encryptionMode <span style='color:#808030; '>=</span> PdfEncryptionMode<span style='color:#008c00; '>.</span>RC4 AndAlso encryptionLevel <span style='color:#808030; '>=</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>VeryHigh<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            dropDownListEncryptionLevel<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"High"</span> <span style='color:#696969; '>' very high mode not supported for RC4</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>encryptionMode <span style='color:#808030; '>=</span> PdfEncryptionMode<span style='color:#008c00; '>.</span>AES AndAlso encryptionLevel <span style='color:#808030; '>=</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>Low<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            dropDownListEncryptionLevel<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"High"</span> <span style='color:#696969; '>' low mode not supported for AES</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> dropDownListEncryptionLevel_SelectedIndexChanged<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> dropDownListEncryptionLevel<span style='color:#008c00; '>.</span>SelectedIndexChanged
+        <span style='color:#800000; font-weight:bold; '>Dim</span> encryptionMode <span style='color:#800000; font-weight:bold; '>As</span> PdfEncryptionMode <span style='color:#808030; '>=</span> GetSelectedEncryptionMode<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800000; font-weight:bold; '>Dim</span> encryptionLevel <span style='color:#800000; font-weight:bold; '>As</span> PdfEncryptionLevel <span style='color:#808030; '>=</span> GetSelectedEncryptionLevel<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>encryptionMode <span style='color:#808030; '>=</span> PdfEncryptionMode<span style='color:#008c00; '>.</span>RC4 AndAlso encryptionLevel <span style='color:#808030; '>=</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>VeryHigh<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            dropDownListEncryptionLevel<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"High"</span> <span style='color:#696969; '>' very high mode not supported for RC4</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#808030; '>(</span>encryptionMode <span style='color:#808030; '>=</span> PdfEncryptionMode<span style='color:#008c00; '>.</span>AES AndAlso encryptionLevel <span style='color:#808030; '>=</span> PdfEncryptionLevel<span style='color:#008c00; '>.</span>Low<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Then</span>
+            dropDownListEncryptionLevel<span style='color:#008c00; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#0000e6; '>"High"</span> <span style='color:#696969; '>' low mode not supported for AES</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> checkBoxAllowFillForms_CheckedChanged<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> checkBoxAllowFillForms<span style='color:#008c00; '>.</span>CheckedChanged
+        <span style='color:#800000; font-weight:bold; '>If</span> <span style='color:#800000; font-weight:bold; '>Not</span> checkBoxAllowFillForms<span style='color:#008c00; '>.</span>Checked <span style='color:#800000; font-weight:bold; '>Then</span>
+            checkBoxAllowEdit<span style='color:#008c00; '>.</span>Checked <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>False</span>
+            checkBoxAllowEditAnnotations<span style='color:#008c00; '>.</span>Checked <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>False</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> checkBoxAllowEdit_CheckedChanged<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> checkBoxAllowEdit<span style='color:#008c00; '>.</span>CheckedChanged
+        <span style='color:#800000; font-weight:bold; '>If</span> checkBoxAllowEdit<span style='color:#008c00; '>.</span>Checked <span style='color:#800000; font-weight:bold; '>Then</span>
+            checkBoxAllowFillForms<span style='color:#008c00; '>.</span>Checked <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>True</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+
+    <span style='color:#800000; font-weight:bold; '>Protected</span> <span style='color:#800000; font-weight:bold; '>Sub</span> checkBoxAllowEditAnnotations_CheckedChanged<span style='color:#808030; '>(</span>sender <span style='color:#800000; font-weight:bold; '>As</span> <span style='color:#800000; font-weight:bold; '>Object</span><span style='color:#808030; '>,</span> e <span style='color:#800000; font-weight:bold; '>As</span> EventArgs<span style='color:#808030; '>)</span> <span style='color:#800000; font-weight:bold; '>Handles</span> checkBoxAllowEditAnnotations<span style='color:#008c00; '>.</span>CheckedChanged
+        <span style='color:#800000; font-weight:bold; '>If</span> checkBoxAllowEditAnnotations<span style='color:#008c00; '>.</span>Checked <span style='color:#800000; font-weight:bold; '>Then</span>
+            checkBoxAllowFillForms<span style='color:#008c00; '>.</span>Checked <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>True</span>
+        <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>If</span>
+    <span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Sub</span>
+<span style='color:#800000; font-weight:bold; '>End</span> <span style='color:#800000; font-weight:bold; '>Class</span>
+</pre>

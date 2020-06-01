@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Another Application View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table style="width:800px">
+    <tr>
+        <td style="width:75px">
+            <img alt="" style="width: 75px" src="img/banner.png" />
+        </td>
+        <td style="font-weight:bold; font-size : 22px">
+            Another View
+        </td>
+    </tr>
+</table>
+<p>
+    This value is the ASP.NET session variable value that you set in Index view before conversion:
+</p>
+@{
+    var sessionVariableValue = "Session variable is not set";
+
+    if (Session["MySessionVariable"] != null)
+    {
+        sessionVariableValue = Session["MySessionVariable"].ToString();
+    }
+}
+<h2 style="color:navy">
+    @sessionVariableValue
+</h2>

@@ -1,0 +1,65 @@
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Collections<span style='color:#808030; '>.</span>Generic<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> HiQPdf<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>namespace</span> HiQPdf_Demo
+<span style='color:#800080; '>{</span>
+<span style='color:#800000; font-weight:bold; '>public</span> partial <span style='color:#800000; font-weight:bold; '>class</span> MergePdf <span style='color:#808030; '>:</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>Page
+<span style='color:#800080; '>{</span>
+<span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> buttonCreatePdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+<span style='color:#800080; '>{</span>
+<span style='color:#696969; '>// create an empty document which will become the final document after merge</span>
+            PdfDocument resultDocument <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDocument<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// set a demo serial number</span>
+            resultDocument<span style='color:#808030; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ==</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// load the first document to be merged from a file</span>
+<span style='color:#800000; font-weight:bold; '>string</span> pdfFile1 <span style='color:#808030; '>=</span> Server<span style='color:#808030; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>~</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>\DemoFiles\Pdf\WikiHtml.pdf</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+            PdfDocument document1 <span style='color:#808030; '>=</span> PdfDocument<span style='color:#808030; '>.</span>FromFile<span style='color:#808030; '>(</span>pdfFile1<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// load the second document to be merged from a FileStream to exemplify the PDF loading from a stream</span>
+<span style='color:#696969; '>// The stream must remain open until the result document is saved. The stream is closed when the document2 </span>
+<span style='color:#696969; '>// will be closed</span>
+<span style='color:#800000; font-weight:bold; '>string</span> pdfFile2 <span style='color:#808030; '>=</span> Server<span style='color:#808030; '>.</span>MapPath<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>~</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>\DemoFiles\Pdf\WikiPdf.pdf</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>FileStream pdfStream <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>FileStream<span style='color:#808030; '>(</span>pdfFile2<span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>FileMode<span style='color:#808030; '>.</span>Open<span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>FileAccess<span style='color:#808030; '>.</span>Read<span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>FileShare<span style='color:#808030; '>.</span>Read<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfDocument document2 <span style='color:#808030; '>=</span> PdfDocument<span style='color:#808030; '>.</span>FromStream<span style='color:#808030; '>(</span>pdfStream<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// add the two documents to the result document</span>
+            resultDocument<span style='color:#808030; '>.</span>AddDocument<span style='color:#808030; '>(</span>document1<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            resultDocument<span style='color:#808030; '>.</span>AddDocument<span style='color:#808030; '>(</span>document2<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>try</span>
+<span style='color:#800080; '>{</span>
+<span style='color:#696969; '>// write the PDF document to a memory buffer</span>
+<span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> pdfBuffer <span style='color:#808030; '>=</span> resultDocument<span style='color:#808030; '>.</span>WriteToMemory<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// inform the browser about the binary data format</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Type</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>application/pdf</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// let the browser know how to open the PDF document and the file name</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Disposition</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> String<span style='color:#808030; '>.</span>Format<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>attachment; filename=MergePdf.pdf; size={0}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span>
+                            pdfBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// write the PDF buffer to HTTP response</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// call End() method of HTTP response to stop ASP.NET page processing</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>End<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#800080; '>}</span>
+<span style='color:#800000; font-weight:bold; '>finally</span>
+<span style='color:#800080; '>{</span>
+<span style='color:#696969; '>// close the result document</span>
+                resultDocument<span style='color:#808030; '>.</span>Close<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#696969; '>// close the merged documents</span>
+<span style='color:#696969; '>// this will also close the pdfStream from which document 2 was loaded </span>
+                document1<span style='color:#808030; '>.</span>Close<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+                document2<span style='color:#808030; '>.</span>Close<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+<span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+<span style='color:#800080; '>{</span>
+<span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>IsPostBack<span style='color:#808030; '>)</span>
+<span style='color:#800080; '>{</span>
+<span style='color:#800000; font-weight:bold; '>string</span> pageUri <span style='color:#808030; '>=</span> HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Request<span style='color:#808030; '>.</span>Url<span style='color:#808030; '>.</span>AbsoluteUri<span style='color:#800080; '>;</span>
+                hyperLinkOpenPdf1<span style='color:#808030; '>.</span>NavigateUrl <span style='color:#808030; '>=</span> pageUri<span style='color:#808030; '>.</span>Substring<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> pageUri<span style='color:#808030; '>.</span>LastIndexOf<span style='color:#808030; '>(</span><span style='color:#0000e6; '>'/'</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>/DemoFiles/Pdf/WikiHtml.pdf</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+                hyperLinkOpenPdf2<span style='color:#808030; '>.</span>NavigateUrl <span style='color:#808030; '>=</span> pageUri<span style='color:#808030; '>.</span>Substring<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> pageUri<span style='color:#808030; '>.</span>LastIndexOf<span style='color:#808030; '>(</span><span style='color:#0000e6; '>'/'</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> <span style='color:#800000; '>@"</span><span style='color:#0000e6; '>/DemoFiles/Pdf/WikiPdf.pdf</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+                Master<span style='color:#808030; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>mergePdf</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+</pre>

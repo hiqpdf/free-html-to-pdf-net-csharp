@@ -1,0 +1,173 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Data<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Configuration<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Collections<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>Security<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#808030; '>.</span>WebParts<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>HtmlControls<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>using</span> HiQPdf<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>namespace</span> HiQPdf_Demo
+<span style='color:#800080; '>{</span>
+    <span style='color:#800000; font-weight:bold; '>public</span> partial <span style='color:#800000; font-weight:bold; '>class</span> ConvertHtmlToImage <span style='color:#808030; '>:</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>Page
+    <span style='color:#800080; '>{</span>
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> buttonConvertToImage_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// create the HTML to Image converter</span>
+            HtmlToImage htmlToImageConverter <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> HtmlToImage<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set a demo serial number</span>
+            htmlToImageConverter<span style='color:#808030; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ==</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set browser width</span>
+            htmlToImageConverter<span style='color:#808030; '>.</span>BrowserWidth <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxBrowserWidth<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set browser height if specified, otherwise use the default</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>textBoxBrowserHeight<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>.</span>Length <span style='color:#808030; '>></span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+                htmlToImageConverter<span style='color:#808030; '>.</span>BrowserHeight <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxBrowserHeight<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set HTML Load timeout</span>
+            htmlToImageConverter<span style='color:#808030; '>.</span>HtmlLoadedTimeout <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxLoadHtmlTimeout<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set whether the resulted image is transparent (has effect only when the output format is PNG)</span>
+            htmlToImageConverter<span style='color:#808030; '>.</span>TransparentImage <span style='color:#808030; '>=</span> <span style='color:#808030; '>(</span>dropDownListImageFormat<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>PNG</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> ?
+                        checkBoxTransparentImage<span style='color:#808030; '>.</span>Checked <span style='color:#808030; '>:</span> <span style='color:#800000; font-weight:bold; '>false</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set triggering mode; for WaitTime mode set the wait time before convert</span>
+            <span style='color:#800000; font-weight:bold; '>switch</span> <span style='color:#808030; '>(</span>dropDownListTriggeringMode<span style='color:#808030; '>.</span>SelectedValue<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Auto</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    htmlToImageConverter<span style='color:#808030; '>.</span>TriggerMode <span style='color:#808030; '>=</span> ConversionTriggerMode<span style='color:#808030; '>.</span>Auto<span style='color:#800080; '>;</span>
+                    <span style='color:#800000; font-weight:bold; '>break</span><span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>WaitTime</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    htmlToImageConverter<span style='color:#808030; '>.</span>TriggerMode <span style='color:#808030; '>=</span> ConversionTriggerMode<span style='color:#808030; '>.</span>WaitTime<span style='color:#800080; '>;</span>
+                    htmlToImageConverter<span style='color:#808030; '>.</span>WaitBeforeConvert <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>int</span><span style='color:#808030; '>.</span>Parse<span style='color:#808030; '>(</span>textBoxWaitTime<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+                    <span style='color:#800000; font-weight:bold; '>break</span><span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Manual</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    htmlToImageConverter<span style='color:#808030; '>.</span>TriggerMode <span style='color:#808030; '>=</span> ConversionTriggerMode<span style='color:#808030; '>.</span>Manual<span style='color:#800080; '>;</span>
+                    <span style='color:#800000; font-weight:bold; '>break</span><span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>default</span><span style='color:#808030; '>:</span>
+                    htmlToImageConverter<span style='color:#808030; '>.</span>TriggerMode <span style='color:#808030; '>=</span> ConversionTriggerMode<span style='color:#808030; '>.</span>Auto<span style='color:#800080; '>;</span>
+                    <span style='color:#800000; font-weight:bold; '>break</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+
+            <span style='color:#696969; '>// convert to image</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Image imageObject <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>null</span><span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>string</span> imageFormatName <span style='color:#808030; '>=</span> dropDownListImageFormat<span style='color:#808030; '>.</span>SelectedValue<span style='color:#808030; '>.</span>ToLower<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>string</span> imageFileName <span style='color:#808030; '>=</span> String<span style='color:#808030; '>.</span>Format<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>HtmlToImage.{0}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> imageFormatName<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>radioButtonConvertUrl<span style='color:#808030; '>.</span>Checked<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// convert URL</span>
+                <span style='color:#800000; font-weight:bold; '>string</span> url <span style='color:#808030; '>=</span> textBoxUrl<span style='color:#808030; '>.</span>Text<span style='color:#800080; '>;</span>
+
+                imageObject <span style='color:#808030; '>=</span> htmlToImageConverter<span style='color:#808030; '>.</span>ConvertUrlToImage<span style='color:#808030; '>(</span>url<span style='color:#808030; '>)</span><span style='color:#808030; '>[</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>]</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+            <span style='color:#800000; font-weight:bold; '>else</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// convert HTML code</span>
+                <span style='color:#800000; font-weight:bold; '>string</span> htmlCode <span style='color:#808030; '>=</span> textBoxHtmlCode<span style='color:#808030; '>.</span>Text<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>string</span> baseUrl <span style='color:#808030; '>=</span> textBoxBaseUrl<span style='color:#808030; '>.</span>Text<span style='color:#800080; '>;</span>
+
+                imageObject <span style='color:#808030; '>=</span> htmlToImageConverter<span style='color:#808030; '>.</span>ConvertHtmlToImage<span style='color:#808030; '>(</span>htmlCode<span style='color:#808030; '>,</span> baseUrl<span style='color:#808030; '>)</span><span style='color:#808030; '>[</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>]</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+
+            <span style='color:#696969; '>// get the image buffer in the selected image format</span>
+            <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> imageBuffer <span style='color:#808030; '>=</span> GetImageBuffer<span style='color:#808030; '>(</span>imageObject<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// the image object rturned by converter can be disposed</span>
+            imageObject<span style='color:#808030; '>.</span>Dispose<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// inform the browser about the binary data format</span>
+            <span style='color:#800000; font-weight:bold; '>string</span> mimeType <span style='color:#808030; '>=</span> imageFormatName <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>jpg</span><span style='color:#800000; '>"</span> ? <span style='color:#800000; '>"</span><span style='color:#0000e6; '>jpeg</span><span style='color:#800000; '>"</span> <span style='color:#808030; '>:</span> imageFormatName<span style='color:#800080; '>;</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Type</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>image/</span><span style='color:#800000; '>"</span> <span style='color:#808030; '>+</span> mimeType<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// let the browser know how to open the image and the image name</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Disposition</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span>
+                        String<span style='color:#808030; '>.</span>Format<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>attachment; filename={0}; size={1}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> imageFileName<span style='color:#808030; '>,</span> imageBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// write the image buffer to HTTP response</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>imageBuffer<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// call End() method of HTTP response to stop ASP.NET page processing</span>
+            HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>End<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>private</span> <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> GetImageBuffer<span style='color:#808030; '>(</span>System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Image imageObject<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// create a memory stream where to save the image</span>
+            System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>MemoryStream imageMemoryStream <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>IO<span style='color:#808030; '>.</span>MemoryStream<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// save the image to memory stream</span>
+            imageObject<span style='color:#808030; '>.</span>Save<span style='color:#808030; '>(</span>imageMemoryStream<span style='color:#808030; '>,</span> GetSelectedImageFormat<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get a copy of the image buffer to allow image disposing</span>
+            <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> imageBuffer <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span>imageMemoryStream<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>]</span><span style='color:#800080; '>;</span>
+            Array<span style='color:#808030; '>.</span>Copy<span style='color:#808030; '>(</span>imageMemoryStream<span style='color:#808030; '>.</span>GetBuffer<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> imageBuffer<span style='color:#808030; '>,</span> imageBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// close the memory stream</span>
+            imageMemoryStream<span style='color:#808030; '>.</span>Close<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>return</span> imageBuffer<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>private</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Imaging<span style='color:#808030; '>.</span>ImageFormat GetSelectedImageFormat<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>switch</span> <span style='color:#808030; '>(</span>dropDownListImageFormat<span style='color:#808030; '>.</span>SelectedValue<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>PNG</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Imaging<span style='color:#808030; '>.</span>ImageFormat<span style='color:#808030; '>.</span>Png<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>JPG</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Imaging<span style='color:#808030; '>.</span>ImageFormat<span style='color:#808030; '>.</span>Jpeg<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>BMP</span><span style='color:#800000; '>"</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Imaging<span style='color:#808030; '>.</span>ImageFormat<span style='color:#808030; '>.</span>Bmp<span style='color:#800080; '>;</span>
+                <span style='color:#800000; font-weight:bold; '>default</span><span style='color:#808030; '>:</span>
+                    <span style='color:#800000; font-weight:bold; '>return</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Imaging<span style='color:#808030; '>.</span>ImageFormat<span style='color:#808030; '>.</span>Png<span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> dropDownListImageFormat_SelectedIndexChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            checkBoxTransparentImage<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> dropDownListImageFormat<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>PNG</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> radioButtonConvertUrl_CheckedChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            panelUrl<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> radioButtonConvertUrl<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+            panelHtmlCode<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#808030; '>!</span>radioButtonConvertUrl<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> radioButtonConvertHtmlCode_CheckedChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            panelUrl<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#808030; '>!</span>radioButtonConvertHtmlCode<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+            panelHtmlCode<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> radioButtonConvertHtmlCode<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>IsPostBack<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                dropDownListImageFormat<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>PNG</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+                checkBoxTransparentImage<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#800080; '>;</span>
+
+                panelUrl<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> radioButtonConvertUrl<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+                panelHtmlCode<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#808030; '>!</span>radioButtonConvertUrl<span style='color:#808030; '>.</span>Checked<span style='color:#800080; '>;</span>
+
+                dropDownListTriggeringMode<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>WaitTime</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+                panelWaitTime<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#800080; '>;</span>
+
+                Master<span style='color:#808030; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>htmlToImage</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> dropDownListTriggeringMode_SelectedIndexChanged<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            panelWaitTime<span style='color:#808030; '>.</span>Visible <span style='color:#808030; '>=</span> dropDownListTriggeringMode<span style='color:#808030; '>.</span>SelectedValue <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>WaitTime</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+        <span style='color:#800080; '>}</span>
+    <span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+</pre>

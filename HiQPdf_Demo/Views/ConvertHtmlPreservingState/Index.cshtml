@@ -1,0 +1,232 @@
+﻿
+@{
+    ViewBag.Title = "Convert Web Pages Preserving State";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    SelectTreeViewNode("treeView_ConvertHtmlPreservingState");
+</script>
+
+<table cellpadding="0" cellspacing="0">
+    <tbody>
+        <tr>
+            <td>
+                When you convert a web page to PDF with the HiQPdf Library you have access to the
+                values filled in the HTML form and to the values stored in the ASP.NET session variables<br>
+                <br>
+                In this demo you can see how to convert the current web page or another web page
+                in this application preserving the values entered in the HTML form and the session
+                variables values.
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 20px"></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">
+                Convert This Page to PDF Preserving HTML Form Values and ASP.NET Session Values
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 10px"></td>
+        </tr>
+        <tr>
+            <td>
+                @using (Html.BeginForm("ConvertThisViewToPdf", "ConvertHtmlPreservingState", FormMethod.Post))
+                {
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 10px"></td>
+                                <td>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: normal">
+                                                    Enter the values to appear in PDF:
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 5px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5px"></td>
+                                                <td>
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    Text Value:
+                                                                </td>
+                                                                <td style="width: 5px"></td>
+                                                                <td>
+                                                                    @Html.TextBox("textBoxText", ViewData["MyTextValue"] != null ? ViewData["MyTextValue"] : "My text to appear in PDF", new { style = "width:322px;" })
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Select a Value:
+                                                                </td>
+                                                                <td style="width: 5px"></td>
+                                                                <td>
+                                                                    @{
+                                                                        List<SelectListItem> listItems = new List<SelectListItem>();
+                                                                        listItems.Add(new SelectListItem
+                                                                        {
+                                                                            Text = "My Value 1",
+                                                                            Value = "1",
+                                                                            Selected = ViewData["MyDropDownListValue"] != null && ViewData["MyDropDownListValue"].ToString() == "1"
+                                                                        });
+                                                                        listItems.Add(new SelectListItem
+                                                                        {
+                                                                            Text = "My Value 2",
+                                                                            Value = "2",
+                                                                            Selected = ViewData["MyDropDownListValue"] != null && ViewData["MyDropDownListValue"].ToString() == "2"
+                                                                        });
+                                                                        listItems.Add(new SelectListItem
+                                                                        {
+                                                                            Text = "My Value 3",
+                                                                            Value = "3",
+                                                                            Selected = ViewData["MyDropDownListValue"] != null && ViewData["MyDropDownListValue"].ToString() == "3"
+                                                                        });
+                                                                        listItems.Add(new SelectListItem
+                                                                        {
+                                                                            Text = "My Value 4",
+                                                                            Value = "4",
+                                                                            Selected = ViewData["MyDropDownListValue"] != null && ViewData["MyDropDownListValue"].ToString() == "4"
+                                                                        });
+                                                                        listItems.Add(new SelectListItem
+                                                                        {
+                                                                            Text = "My Value 5",
+                                                                            Value = "5",
+                                                                            Selected = ViewData["MyDropDownListValue"] != null && ViewData["MyDropDownListValue"].ToString() == "5"
+                                                                        });
+                                                                    }
+                                                                    @Html.DropDownList("dropDownListValues", listItems)
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Session Variable:
+                                                                </td>
+                                                                <td style="width: 5px"></td>
+                                                                <td>
+                                                                    @Html.TextBox("textBoxCrtSessionVariable", Session["SessionVariable"] != null ? Session["SessionVariable"] : "My session variable value", new { style = "width:322px;" })
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 10px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    @{
+                                                        var sessionVariableValue = Session["SessionVariable"] != null ? Session["SessionVariable"] : "";
+                                                        var displaySessionVariableValue = ViewData["displaySessionVariable"] != null ? "block" : "none";
+                                                    }
+                                                    <div id="panelSessionVariableValue" style="display:@displaySessionVariableValue">
+
+                                                        <table>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        Session variable value: @sessionVariableValue
+                                                                    </td>
+                                                                    <td style="width: 5px"></td>
+                                                                    <td style="color: Navy"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div id="convertCrtPageDiv">
+                                                        <input type="submit" name="buttonConvertCrtPage" value="Convert This Page to PDF" id="buttonConvertCrtPage">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 40px"></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">
+                Convert Another Page in This Application to PDF Preserving ASP.NET Session Values
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 20px"></td>
+        </tr>
+        <tr>
+            <td>
+                @using (Html.BeginForm("ConvertAnotherViewToPdf", "ConvertHtmlPreservingState", FormMethod.Post))
+                {
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 10px"></td>
+                                <td>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: normal">
+                                                    Enter the values to appear in PDF:
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 5px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5px"></td>
+                                                <td>
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    Session Variable:
+                                                                </td>
+                                                                <td style="width: 5px"></td>
+                                                                <td>
+                                                                    <input name="textBoxAnotherSessionVariable" type="text" value="My session variable value" id="textBoxAnotherSessionVariable" style="width:322px;">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 10px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div id="convertAnotherPageDiv">
+                                                        <input type="submit" name="buttonConvertAnotherPage" value="Convert Another Page in This Application to PDF" id="buttonConvertAnotherPage">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>

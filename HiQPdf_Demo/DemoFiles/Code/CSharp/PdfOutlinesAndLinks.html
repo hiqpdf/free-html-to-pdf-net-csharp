@@ -1,0 +1,300 @@
+<pre style='color: #000000; background: #ffffff;'><span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Collections<span style='color:#808030; '>.</span>Generic<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>using</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>WebControls<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>using</span> HiQPdf<span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>namespace</span> HiQPdf_Demo
+<span style='color:#800080; '>{</span>
+    <span style='color:#800000; font-weight:bold; '>public</span> partial <span style='color:#800000; font-weight:bold; '>class</span> PdfOutlinesAndLinks <span style='color:#808030; '>:</span> System<span style='color:#808030; '>.</span>Web<span style='color:#808030; '>.</span>UI<span style='color:#808030; '>.</span>Page
+    <span style='color:#800080; '>{</span>
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> buttonCreatePdf_Click<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#696969; '>// create a PDF document</span>
+            PdfDocument document <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDocument<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// set a demo serial number</span>
+            document<span style='color:#808030; '>.</span>SerialNumber <span style='color:#808030; '>=</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>YCgJMTAE-BiwJAhIB-EhlWTlBA-UEBRQFBA-U1FOUVJO-WVlZWQ==</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// display the outlines when the document is opened</span>
+            document<span style='color:#808030; '>.</span>Viewer<span style='color:#808030; '>.</span>PageMode <span style='color:#808030; '>=</span> PdfPageMode<span style='color:#808030; '>.</span>Outlines<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the true type fonts that can be used in document</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Font sysFont <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Font<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Times New Roman</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>GraphicsUnit<span style='color:#808030; '>.</span>Point<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfFont pdfFont <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateFont<span style='color:#808030; '>(</span>sysFont<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfFont pdfFontEmbed <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateFont<span style='color:#808030; '>(</span>sysFont<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Font sysFontBold <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Font<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Times New Roman</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>12</span><span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>FontStyle<span style='color:#808030; '>.</span>Bold<span style='color:#808030; '>,</span> 
+                                System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>GraphicsUnit<span style='color:#808030; '>.</span>Point<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfFont pdfFontBold <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateFont<span style='color:#808030; '>(</span>sysFontBold<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfFont pdfFontBoldEmbed <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateFont<span style='color:#808030; '>(</span>sysFontBold<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Font sysFontBig <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Font<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Times New Roman</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>16</span><span style='color:#808030; '>,</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>FontStyle<span style='color:#808030; '>.</span>Bold<span style='color:#808030; '>,</span> 
+                                System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>GraphicsUnit<span style='color:#808030; '>.</span>Point<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfFont pdfFontBig <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateFont<span style='color:#808030; '>(</span>sysFontBig<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfFont pdfFontBigEmbed <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateFont<span style='color:#808030; '>(</span>sysFontBig<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create a reference Graphics used for measuring</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Bitmap refBmp <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Bitmap<span style='color:#808030; '>(</span><span style='color:#008c00; '>1</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>1</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Graphics refGraphics <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Graphics<span style='color:#808030; '>.</span>FromImage<span style='color:#808030; '>(</span>refBmp<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            refGraphics<span style='color:#808030; '>.</span>PageUnit <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>GraphicsUnit<span style='color:#808030; '>.</span>Point<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create page 1</span>
+            PdfPage page1 <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>AddPage<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>float</span> crtXPos <span style='color:#808030; '>=</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+            <span style='color:#800000; font-weight:bold; '>float</span> crtYPos <span style='color:#808030; '>=</span> <span style='color:#008c00; '>20</span><span style='color:#800080; '>;</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#region </span><span style='color:#696969; '>Create Table of contents</span>
+
+            <span style='color:#696969; '>// create table of contents title</span>
+            PdfText tableOfContentsTitle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Table of Contents</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontBigEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>tableOfContentsTitle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create a top outline for the table of contents</span>
+            PdfDestination tableOfContentsDest <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDestination<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            document<span style='color:#808030; '>.</span>CreateTopOutline<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Table of Contents</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> tableOfContentsDest<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// advance current Y position in page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> pdfFontBigEmbed<span style='color:#808030; '>.</span>Size <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create Chapter 1 in table of contents</span>
+            PdfText chapter1TocTitle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>30</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Chapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontBoldEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the chapter 1 title in TOC</span>
+            page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>chapter1TocTitle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get the bounding rectangle of the chapter 1 title in TOC</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>SizeF textSize <span style='color:#808030; '>=</span> refGraphics<span style='color:#808030; '>.</span>MeasureString<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Chapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> sysFontBold<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF chapter1TocTitleRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>30</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Width<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// advance current Y position in page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> pdfFontEmbed<span style='color:#808030; '>.</span>Size <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create Subchapter 1 in table of contents</span>
+            PdfText subChapter11TocTitle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>60</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>subChapter11TocTitle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get the bounding rectangle of the subchapter 1 title in TOC</span>
+            textSize <span style='color:#808030; '>=</span> refGraphics<span style='color:#808030; '>.</span>MeasureString<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> sysFont<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF subChapter11TocTitleRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>60</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Width<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// advance current Y position in page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> pdfFontEmbed<span style='color:#808030; '>.</span>Size <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create Subchapter 2 in table of contents</span>
+            PdfText subChapter21TocTitle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>60</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>subChapter21TocTitle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get the bounding rectangle of the subchapter 2 title in TOC</span>
+            textSize <span style='color:#808030; '>=</span> refGraphics<span style='color:#808030; '>.</span>MeasureString<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> sysFont<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF subChapter21TocTitleRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>60</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Width<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// advance current Y position in page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> pdfFontEmbed<span style='color:#808030; '>.</span>Size <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create Chapter 2 in table of contents</span>
+            PdfText chapter2TocTitle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>30</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Chapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontBoldEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>chapter2TocTitle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get the bounding rectangle of the chapter 2 title in TOC</span>
+            textSize <span style='color:#808030; '>=</span> refGraphics<span style='color:#808030; '>.</span>MeasureString<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Capter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> sysFontBold<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF chapter2TocTitleRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>30</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Width<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// advance current Y position in page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> pdfFontEmbed<span style='color:#808030; '>.</span>Size <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create Subchapter 1 in table of contents</span>
+            PdfText subChapter12TocTitle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>60</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>subChapter12TocTitle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get the bounding rectangle of the subchapter 1 title in TOC</span>
+            textSize <span style='color:#808030; '>=</span> refGraphics<span style='color:#808030; '>.</span>MeasureString<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> sysFont<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF subChapter12TocTitleRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>60</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Width<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// advance current Y position in page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> pdfFontEmbed<span style='color:#808030; '>.</span>Size <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create Subchapter 2 in table of contents</span>
+            PdfText subChapter22TocTitle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>60</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>subChapter22TocTitle<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get the bounding rectangle of the subchapter 2 title in TOC</span>
+            textSize <span style='color:#808030; '>=</span> refGraphics<span style='color:#808030; '>.</span>MeasureString<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> sysFont<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF subChapter22TocTitleRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>60</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Width<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// advance current Y position in page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> pdfFontEmbed<span style='color:#808030; '>.</span>Size <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the website link in the table of contents</span>
+            PdfText visitWebSiteText <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>30</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Visit HiQPdf Website</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            visitWebSiteText<span style='color:#808030; '>.</span>ForeColor <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Color<span style='color:#808030; '>.</span>Navy<span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page1<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>visitWebSiteText<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// get the bounding rectangle of the website link in TOC</span>
+            textSize <span style='color:#808030; '>=</span> refGraphics<span style='color:#808030; '>.</span>MeasureString<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Visit HiQPdf Website</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> sysFont<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF visitWebsiteRectangle <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>RectangleF<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>30</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Width<span style='color:#808030; '>,</span> textSize<span style='color:#808030; '>.</span>Height<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the link to website in table of contents</span>
+            document<span style='color:#808030; '>.</span>CreateUriLink<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> visitWebsiteRectangle<span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>http://www.hiqpdf.com</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// advance current Y position in page</span>
+            crtYPos <span style='color:#808030; '>+</span><span style='color:#808030; '>=</span> pdfFontEmbed<span style='color:#808030; '>.</span>Size <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create a text note at the end of TOC</span>
+            PdfTextNote textNote <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateTextNote<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>crtXPos <span style='color:#808030; '>+</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> crtYPos<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span>
+                            <span style='color:#800000; '>"</span><span style='color:#0000e6; '>The table of contents contains internal links to chapters and subchapters</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            textNote<span style='color:#808030; '>.</span>IconType <span style='color:#808030; '>=</span> PdfTextNoteIconType<span style='color:#808030; '>.</span>Note<span style='color:#800080; '>;</span>
+            textNote<span style='color:#808030; '>.</span>IsOpen <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>true</span><span style='color:#800080; '>;</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#endregion</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#region </span><span style='color:#696969; '>Create Chapter 1 content and the link from TOC</span>
+
+            <span style='color:#696969; '>// create page 2</span>
+            PdfPage page2 <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>AddPage<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the Chapter 1 title</span>
+            PdfText chapter1Title <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Chapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontBoldEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page2<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>chapter1Title<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the Chapter 1 root outline</span>
+            PdfDestination chapter1Destination <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDestination<span style='color:#808030; '>(</span>page2<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfOutline chapter1Outline <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateTopOutline<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Chapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> chapter1Destination<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            chapter1Outline<span style='color:#808030; '>.</span>TitleColor <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Color<span style='color:#808030; '>.</span>Navy<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the PDF link from TOC to chapter 1</span>
+            document<span style='color:#808030; '>.</span>CreatePdfLink<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> chapter1TocTitleRectangle<span style='color:#808030; '>,</span> chapter1Destination<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#endregion</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#region </span><span style='color:#696969; '>Create Subchapter 1 content and the link from TOC</span>
+
+            <span style='color:#696969; '>// create the Subchapter 1 </span>
+            PdfText subChapter11Title <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>300</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 1 of Chapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page2<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>subChapter11Title<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create subchapter 1 child outline</span>
+            PdfDestination subChapter11Destination <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDestination<span style='color:#808030; '>(</span>page2<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>300</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfOutline subchapter11Outline <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateChildOutline<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> subChapter11Destination<span style='color:#808030; '>,</span> chapter1Outline<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the PDF link from TOC to subchapter 1</span>
+            document<span style='color:#808030; '>.</span>CreatePdfLink<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> subChapter11TocTitleRectangle<span style='color:#808030; '>,</span> subChapter11Destination<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#endregion</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#region </span><span style='color:#696969; '>Create Subchapter 2 content and the link from TOC</span>
+
+            <span style='color:#696969; '>// create the Subchapter 2 </span>
+            PdfText subChapter21Title <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>600</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 2 of Chapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page2<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>subChapter21Title<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create subchapter 2 child outline</span>
+            PdfDestination subChapter21Destination <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDestination<span style='color:#808030; '>(</span>page2<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>600</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfOutline subchapter21Outline <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateChildOutline<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> subChapter21Destination<span style='color:#808030; '>,</span> chapter1Outline<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the PDF link from TOC to subchapter 2</span>
+            document<span style='color:#808030; '>.</span>CreatePdfLink<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> subChapter21TocTitleRectangle<span style='color:#808030; '>,</span> subChapter21Destination<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#endregion</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#region </span><span style='color:#696969; '>Create Chapter 2 content and the link from TOC</span>
+
+            <span style='color:#696969; '>// create page 3</span>
+            PdfPage page3 <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>AddPage<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the Chapter 2 title</span>
+            PdfText chapter2Title <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Chapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontBoldEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page3<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>chapter2Title<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create chapter 2 to outline</span>
+            PdfDestination chapter2Destination <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDestination<span style='color:#808030; '>(</span>page3<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>10</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfOutline chapter2Outline <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateTopOutline<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Chapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> chapter2Destination<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            chapter2Outline<span style='color:#808030; '>.</span>TitleColor <span style='color:#808030; '>=</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>Color<span style='color:#808030; '>.</span>Green<span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the PDF link from TOC to chapter 2</span>
+            document<span style='color:#808030; '>.</span>CreatePdfLink<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> chapter2TocTitleRectangle<span style='color:#808030; '>,</span> chapter2Destination<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#endregion</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#region </span><span style='color:#696969; '>Create Subchapter 1 content and the link from TOC</span>
+
+            <span style='color:#696969; '>// create the Subchapter 1 </span>
+            PdfText subChapter12Title <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>300</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 1 of Chapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page3<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>subChapter12Title<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create subchapter 1 child outline</span>
+            PdfDestination subChapter12Destination <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDestination<span style='color:#808030; '>(</span>page3<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>300</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfOutline subchapter12Outline <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateChildOutline<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> subChapter12Destination<span style='color:#808030; '>,</span> chapter2Outline<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the PDF link from TOC to subchapter 1</span>
+            document<span style='color:#808030; '>.</span>CreatePdfLink<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> subChapter12TocTitleRectangle<span style='color:#808030; '>,</span> subChapter12Destination<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#endregion</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#region </span><span style='color:#696969; '>Create Subchapter 2 content and the link from TOC</span>
+
+            <span style='color:#696969; '>// create the Subchapter 2 </span>
+            PdfText subChapter22Title <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfText<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>600</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 2 of Chapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> pdfFontEmbed<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#696969; '>// layout the text</span>
+            page3<span style='color:#808030; '>.</span>Layout<span style='color:#808030; '>(</span>subChapter22Title<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create subchapter 2 child outline</span>
+            PdfDestination subChapter22Destination <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PdfDestination<span style='color:#808030; '>(</span>page3<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>new</span> System<span style='color:#808030; '>.</span>Drawing<span style='color:#808030; '>.</span>PointF<span style='color:#808030; '>(</span>crtXPos<span style='color:#808030; '>,</span> <span style='color:#008c00; '>600</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            PdfOutline subchapter22Outline <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>CreateChildOutline<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Subchapter 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> subChapter22Destination<span style='color:#808030; '>,</span> chapter2Outline<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#696969; '>// create the PDF link from TOC to subchapter 2</span>
+            document<span style='color:#808030; '>.</span>CreatePdfLink<span style='color:#808030; '>(</span>page1<span style='color:#808030; '>,</span> subChapter22TocTitleRectangle<span style='color:#808030; '>,</span> subChapter22Destination<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+<span style='color:#004a43; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;#endregion</span>
+
+            <span style='color:#696969; '>// dispose the graphics used for measuring</span>
+            refGraphics<span style='color:#808030; '>.</span>Dispose<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            refBmp<span style='color:#808030; '>.</span>Dispose<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+            <span style='color:#800000; font-weight:bold; '>try</span>
+            <span style='color:#800080; '>{</span>
+                <span style='color:#696969; '>// write the PDF document to a memory buffer</span>
+                <span style='color:#800000; font-weight:bold; '>byte</span><span style='color:#808030; '>[</span><span style='color:#808030; '>]</span> pdfBuffer <span style='color:#808030; '>=</span> document<span style='color:#808030; '>.</span>WriteToMemory<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// inform the browser about the binary data format</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Type</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>application/pdf</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// let the browser know how to open the PDF document and the file name</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>AddHeader<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Content-Disposition</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> String<span style='color:#808030; '>.</span>Format<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>attachment; filename=PdfOutlines.pdf; size={0}</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span>
+                            pdfBuffer<span style='color:#808030; '>.</span>Length<span style='color:#808030; '>.</span>ToString<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// write the PDF buffer to HTTP response</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>BinaryWrite<span style='color:#808030; '>(</span>pdfBuffer<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+                <span style='color:#696969; '>// call End() method of HTTP response to stop ASP.NET page processing</span>
+                HttpContext<span style='color:#808030; '>.</span>Current<span style='color:#808030; '>.</span>Response<span style='color:#808030; '>.</span>End<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+            <span style='color:#800000; font-weight:bold; '>finally</span>
+            <span style='color:#800080; '>{</span>
+                document<span style='color:#808030; '>.</span>Close<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+
+        <span style='color:#800000; font-weight:bold; '>protected</span> <span style='color:#800000; font-weight:bold; '>void</span> Page_Load<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>object</span> sender<span style='color:#808030; '>,</span> EventArgs e<span style='color:#808030; '>)</span>
+        <span style='color:#800080; '>{</span>
+            <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>!</span>IsPostBack<span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>{</span>
+                Master<span style='color:#808030; '>.</span>SelectNode<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>pdfOutlines</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span>
+    <span style='color:#800080; '>}</span>
+<span style='color:#800080; '>}</span>
+</pre>
